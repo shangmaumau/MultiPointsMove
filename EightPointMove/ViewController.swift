@@ -95,22 +95,6 @@ class ViewController: UIViewController {
         BSDPointManager.default.setUpAllPoints()
         
         
-//        bsdTouch = BSDTouchPoint(frame: CGRect(x: 50, y: 50, width: 60, height: 60), point: BSDPoint(horizontalLevel: 0, verticalLevel: 0, point: CGPoint.zero, sideColor: BSDSideColor.empty))
-//        
-//        bsdTouch?.panBlock = { [weak self] (state, viewPoint) in
-//            
-//            guard let self = self else {
-//                return
-//            }
-//            
-//            UIView.animate(withDuration: 0.1) {
-//                self.bsdTouch?.center = viewPoint
-//            }
-//        }
-//        
-//        view.addSubview(bsdTouch!)
-        
-        
     }
 
 

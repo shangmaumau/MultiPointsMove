@@ -15,6 +15,10 @@ class BSDPointManager: NSObject {
     
     public private(set) var points = [BSDPoint]()
     
+    // MARK:- 添加点
+    
+    /// 添加点集
+    /// - Parameter points: 点集
     public func addPoints(_ points: [BSDPoint]) {
         for p_ in points {
             addPoint(p_)
@@ -34,6 +38,9 @@ class BSDPointManager: NSObject {
         points.append(point)
     }
     
+    // MARK:- 整理点
+    
+    /// 设定所有的点
     public func setUpAllPoints() {
         
         for (idx, var _p) in points.enumerated() {
@@ -51,6 +58,8 @@ class BSDPointManager: NSObject {
         }
         
         points.remove(at: points.firstIndex(of: point)!)
+
+        // TODO: 这里需要添加移除之后整理的逻辑
     }
     
     /// 更新点
@@ -64,11 +73,15 @@ class BSDPointManager: NSObject {
         points[idx] = point
         
         for (idx, var point_) in points.enumerated() {
+            // NOTE: 这里的更新，因为有先后顺序，所以先更新的 BSDPoint 中的 bondPoints 中的 bondPoints
+            // 是不完整的。因为 BSDPoint 是值类型，所以只能取到一层 bondPoints，再往下取的就不准确了。
             point_.updateBondPoint(point)
             points[idx] = point_
         }
         
     }
+    
+    // MARK:- 限定点
     
     public func limitPoint(_ newPoint: BSDPoint) -> BSDPoint? {
         
@@ -82,6 +95,11 @@ class BSDPointManager: NSObject {
         return nil
     }
     
+    // MARK:- 简便方法
+    
+    /// 按照等级从数组中取出相应元素
+    /// - Parameter level: 要取出的元素的等级
+    /// - Returns: 等级对应的点
     private func pointFromLevel(_ level: CGPoint) -> BSDPoint? {
         
         for point in points {
@@ -197,6 +215,10 @@ struct BSDPoint {
     public var point: CGPoint = CGPoint.zero
     private var sideColor: BSDSideColor
     
+    /// `bondPoints` 只能取一层，且只能取其 `point` 属性的值。
+    ///
+    /// 在更新时，有先后顺序， 因为是值类型的缘故，先更新的，
+    /// 是无法读取到后更新的 `bondPoints` 的。
     public var bondPoints = [BondPointPosition : BSDPoint]()
     public var bondColors: [BondPointPosition : UIColor?] {
         [ .top: sideColor.top, .left: sideColor.left, .right: sideColor.right, .bottom: sideColor.bottom]
@@ -292,7 +314,6 @@ struct BSDPoint {
         else if inLevel.y == meLevel.y - 1 && inLevel.x == meLevel.x + 1 {
             return .topRight
         }
-        
         
         return .none
     }
