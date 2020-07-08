@@ -164,8 +164,15 @@ struct BSDPoint {
         self.sideColor = sideColor
     }
     
+    private enum Side: String {
+        case top
+        case left
+        case right
+        case bottom
+    }
+    
     /// 关联点方位
-    enum BondPointPosition: String {
+    public enum BondPointPosition: String {
         /// 与此点无关系的点
         case none
         /// 在此点上方
@@ -176,6 +183,14 @@ struct BSDPoint {
         case right
         /// 在此点下方
         case bottom
+        /// 左上方
+        case topLeft
+        /// 右上方
+        case topRight
+        /// 左下方
+        case bottomLeft
+        /// 右下方
+        case bottomRight
     }
     
     public var level: CGPoint = CGPoint.zero
@@ -235,10 +250,12 @@ struct BSDPoint {
         
         let inLevel = point.level
         let meLevel = self.level
-        if inLevel.x == meLevel.x && inLevel.y == meLevel.y + 1 {
+        
+        // 上
+        if inLevel.x == meLevel.x && inLevel.y == meLevel.y - 1 {
             return .top
         }
-        
+        // 左
         else if inLevel.y == meLevel.y && inLevel.x == meLevel.x - 1 {
             // 横轴最小点为 0，不能小于它
             if meLevel.x == 0 {
@@ -246,18 +263,36 @@ struct BSDPoint {
             }
             return .left
         }
-        
+        // 右
         else if inLevel.y == meLevel.y && inLevel.x == meLevel.x + 1 {
             return .right
         }
-        
-        else if inLevel.x == meLevel.x && inLevel.y == meLevel.y - 1 {
+        // 下
+        else if inLevel.x == meLevel.x && inLevel.y == meLevel.y + 1 {
             // 纵轴最小点为 0，不能小于此点
             if meLevel.y == 0 {
                 return .none
             }
             return .bottom
         }
+        
+        // 左上
+        else if inLevel.y == meLevel.y - 1 && inLevel.x == meLevel.x - 1 {
+            return .topLeft
+        }
+        // 左下
+        else if inLevel.y == meLevel.y + 1 && inLevel.x == meLevel.x - 1 {
+            return .bottomLeft
+        }
+        // 右下
+        else if inLevel.y == meLevel.y + 1 && inLevel.x == meLevel.x + 1 {
+            return .bottomRight
+        }
+        // 右上
+        else if inLevel.y == meLevel.y - 1 && inLevel.x == meLevel.x + 1 {
+            return .topRight
+        }
+        
         
         return .none
     }
@@ -273,27 +308,29 @@ struct BSDPoint {
         
         var outPoint = newPoint
         
-        if let upPoint = bondPoints[.top] {
-            if newPoint.y > upPoint.point.y {
-                outPoint.y = upPoint.point.y
+        let margin: CGFloat = 10.0
+        
+        if let topLimit = limitSide(.top) {
+            if newPoint.y < topLimit {
+                outPoint.y = topLimit + margin
             }
         }
         
-        if let leftPoint = bondPoints[.left] {
-            if newPoint.x < leftPoint.point.x {
-                outPoint.x = leftPoint.point.x
+        if let leftLimit = limitSide(.left) {
+            if newPoint.x < leftLimit {
+                outPoint.x = leftLimit + margin
             }
         }
         
-        if let rightPoint = bondPoints[.right] {
-            if newPoint.x > rightPoint.point.x {
-                outPoint.x = rightPoint.point.x
+        if let rightLimit = limitSide(.right) {
+            if newPoint.x > rightLimit {
+                outPoint.x = rightLimit - margin
             }
         }
         
-        if let downPoint = bondPoints[.bottom] {
-            if newPoint.y < downPoint.point.y {
-                outPoint.y = downPoint.point.y
+        if let bottomLimit = limitSide(.bottom) {
+            if newPoint.y > bottomLimit {
+                outPoint.y = bottomLimit - margin
             }
         }
         
@@ -301,6 +338,98 @@ struct BSDPoint {
         
         return outPoint
     }
+    
+    
+    private func limitSide(_ side: Side) -> CGFloat? {
+        
+        var result: CGFloat?
+        
+        switch side {
+        case .top:
+            result = bsdMax(bondPoints[.top]?.point.y, bondPoints[.topLeft]?.point.y, bondPoints[.topRight]?.point.y)
+            
+        case .left:
+            result = bsdMax(bondPoints[.left]?.point.x, bondPoints[.topLeft]?.point.x, bondPoints[.bottomLeft]?.point.x)
+            
+        case .right:
+            result = bsdMin(bondPoints[.right]?.point.x, bondPoints[.topRight]?.point.x, bondPoints[.bottomRight]?.point.x)
+            
+        case .bottom:
+            result = bsdMin(bondPoints[.bottom]?.point.y, bondPoints[.bottomLeft]?.point.y, bondPoints[.bottomRight]?.point.y)
+        }
+        
+        return result
+    }
+    
+    private func bsdMin<T: Comparable>(_ f1: T?, _ f2: T?, _ f3: T?) -> T? {
+        
+        var result: T?
+        if let f1 = f1, f2 == nil, f3 == nil {
+            result = f1
+        }
+        
+        else if let f2 = f2, f1 == nil, f3 == nil {
+            result = f2
+        }
+        
+        else if let f3 = f3, f1 == nil, f2 == nil {
+            result = f3
+        }
+        
+        else if let f1 = f1, let f2 = f2, f3 == nil {
+            result = min(f1, f2)
+        }
+        
+        else if let f1 = f1, let f3 = f3, f2 == nil {
+            result = min(f1, f3)
+        }
+        
+        else if let f2 = f2, let f3 = f3, f1 == nil {
+            result = min(f2, f3)
+        }
+        
+        else if let f1 = f1, let f2 = f2, let f3 = f3 {
+            result = min(f1, f2, f3)
+        }
+        
+        return result
+    }
+    
+    private func bsdMax<T: Comparable>(_ f1: T?, _ f2: T?, _ f3: T?) -> T? {
+        
+        var result: T?
+        if let f1 = f1, f2 == nil, f3 == nil {
+            result = f1
+        }
+        
+        else if let f2 = f2, f1 == nil, f3 == nil {
+            result = f2
+        }
+        
+        else if let f3 = f3, f1 == nil, f2 == nil {
+            result = f3
+        }
+        
+        else if let f1 = f1, let f2 = f2, f3 == nil {
+            result = max(f1, f2)
+        }
+        
+        else if let f1 = f1, let f3 = f3, f2 == nil {
+            result = max(f1, f3)
+        }
+        
+        else if let f2 = f2, let f3 = f3, f1 == nil {
+            result = max(f2, f3)
+        }
+        
+        else if let f1 = f1, let f2 = f2, let f3 = f3 {
+            result = max(f1, f2, f3)
+        }
+        
+        return result
+    }
+    
+    
 }
 
 extension BSDPoint: Equatable {
