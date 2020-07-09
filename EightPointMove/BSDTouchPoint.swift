@@ -15,20 +15,20 @@ class BSDPointManager: NSObject {
     
     public private(set) var points = [BSDPoint]()
     
-    // MARK:- 添加点
+    // MARK:- Add point
     
-    /// 添加点集
-    /// - Parameter points: 点集
+    /// Add points.
+    /// - Parameter points: Points.
     public func addPoints(_ points: [BSDPoint]) {
         for p_ in points {
             addPoint(p_)
         }
     }
     
-    /// 添加点
+    /// Add point.
     ///
-    /// 如果数组中已经有此点，则不添加
-    /// - Parameter point: 要添加的点
+    /// If `points` contains this point, won't add in.
+    /// - Parameter point: In point.
     public func addPoint(_ point: BSDPoint) {
         
         guard points.firstIndex(of: point) == nil else {
@@ -38,9 +38,9 @@ class BSDPointManager: NSObject {
         points.append(point)
     }
     
-    // MARK:- 整理点
+    // MARK:- Set up points
     
-    /// 设定所有的点
+    /// Set up all points.
     public func setUpAllPoints() {
         
         for (idx, var _p) in points.enumerated() {
@@ -49,8 +49,8 @@ class BSDPointManager: NSObject {
         }
     }
     
-    /// 移除点
-    /// - Parameter point: 要移除的点
+    /// Remove point.
+    /// - Parameter point: In point.
     public func removePoint(_ point: BSDPoint) {
         
         guard points.firstIndex(of: point) != nil else {
@@ -59,12 +59,12 @@ class BSDPointManager: NSObject {
         
         points.remove(at: points.firstIndex(of: point)!)
 
-        // TODO: 这里需要添加移除之后整理的逻辑
+        // TODO: Should add the handle of removement.
     }
     
-    /// 更新点
-    /// - Note: 更新点的时候，必须是已经添加了所有需要用到的点
-    /// - Parameter point: 要更新的点
+    /// Update point.
+    /// - Note: Call this after all the points added.
+    /// - Parameter point: In point.
     private func updatePoint(_ point: BSDPoint) {
         
         guard let idx = points.firstIndex(of: point) else {
@@ -73,33 +73,30 @@ class BSDPointManager: NSObject {
         points[idx] = point
         
         for (idx, var point_) in points.enumerated() {
-            // NOTE: 这里的更新，因为有先后顺序，所以先更新的 BSDPoint 中的 bondPoints 中的 bondPoints
-            // 是不完整的。因为 BSDPoint 是值类型，所以只能取到一层 bondPoints，再往下取的就不准确了。
             point_.updateBondPoint(point)
             points[idx] = point_
         }
         
     }
     
-    // MARK:- 限定点
+    // MARK:- Limit point.
     
     public func limitPoint(_ newPoint: BSDPoint) -> BSDPoint? {
         
         if var nP = pointFromLevel(newPoint.level) {
             nP.limitPoint(newPoint.point)
             updatePoint(nP)
-            // 返回更新之后的点
             return pointFromLevel(nP.level)
         }
         
         return nil
     }
     
-    // MARK:- 简便方法
+    // MARK:- Methods
     
-    /// 按照等级从数组中取出相应元素
-    /// - Parameter level: 要取出的元素的等级
-    /// - Returns: 等级对应的点
+    /// Fetch the element by its `level`.
+    /// - Parameter level: Element's level.
+    /// - Returns: The point.
     public func pointFromLevel(_ level: CGPoint) -> BSDPoint? {
         
         for point in points {
@@ -171,11 +168,11 @@ struct BSDSideColor {
 
 struct BSDPoint {
     
-    /// 构造函数
+    /// Init.
     /// - Parameters:
-    ///   - horizontalLevel: 水平方向的层级，从 0 开始
-    ///   - verticalLevel: 垂直方向的层级，从 0 开始
-    ///   - point: 一般来说，这里应该是像素点
+    ///   - horizontalLevel: Horizontal level, start from 0.
+    ///   - verticalLevel: Vertical level, start from 0.
+    ///   - point: Coordinate of the point.
     public init(horizontalLevel: Int, verticalLevel: Int, point: CGPoint, sideColor: BSDSideColor = BSDSideColor.empty) {
         level = CGPoint(x: horizontalLevel, y: verticalLevel)
         self.point = point
@@ -189,25 +186,25 @@ struct BSDPoint {
         case bottom
     }
     
-    /// 关联点方位
+    /// Bond points position.
     public enum BondPointPosition: String {
-        /// 与此点无关系的点
+        /// No relation.
         case none
-        /// 在此点上方
+        /// Top side.
         case top
-        /// 在此点左方
+        /// Left side.
         case left
-        /// 在此点右方
+        /// Right side.
         case right
-        /// 在此点下方
+        /// Bottom side.
         case bottom
-        /// 左上方
+        /// Top left.
         case topLeft
-        /// 右上方
+        /// Top right.
         case topRight
-        /// 左下方
+        /// Bottom left.
         case bottomLeft
-        /// 右下方
+        /// Bottom right.
         case bottomRight
     }
     
@@ -215,13 +212,13 @@ struct BSDPoint {
     public var point: CGPoint = CGPoint.zero
     private var sideColor: BSDSideColor
     
-    /// `bondPoints` 只能取一层，且只能取其 `point` 属性的值。
+    /// `bondPoints` can only be access deep in first level, and should only access its `point`.
     ///
-    /// 在更新时，是有先后顺序的。因为是值类型的缘故，先更新的，
-    /// 无法读取到后更新的 `bondPoints` ，所以只能取一层。
+    /// By the updating time, all values were updated one by one, cause `BSDPoint` is value type,
+    /// so the former update one can't know the latter updated one's all properties.
     public var bondPoints = [BondPointPosition : BSDPoint]()
     
-    /// 真实拥有的关联点
+    /// Real bonded points.
     public var bondPointsR: [BSDPoint] {
         
         var bsds = [BSDPoint]()
@@ -249,22 +246,22 @@ struct BSDPoint {
         return BSDPoint(horizontalLevel: 0, verticalLevel: 0, point: CGPoint.zero, sideColor: BSDSideColor.empty)
     }
     
-    /// 添加多个关联点
+    /// Add bonded points.
     ///
-    /// 会自动筛选，如果不是和本点有关联的点，则不添加
+    /// Will filter, if has no relation, won't add in.
     ///
-    /// - Parameter points:
+    /// - Parameter points: In points.
     public mutating func addBondPoints(_ points: [BSDPoint]) {
         for p_ in points {
             addBondPoint(p_)
         }
     }
     
-    /// 添加关联点
+    /// Add bonded point.
     ///
-    /// 会自动筛选，如果不是和本点有关联的点，则不添加
+    /// Will filter, if has no relation, won't add in.
     /// - Parameters:
-    ///   - point: 点
+    ///   - point: In point.
     public mutating func addBondPoint(_ point: BSDPoint) {
         
         guard positionFromPoint(point) != .none else {
@@ -275,8 +272,8 @@ struct BSDPoint {
         bondPoints[pos] = point
     }
     
-    /// 更新关联点
-    /// - Parameter point: 与本点关联的点
+    /// Update boned point.
+    /// - Parameter point: The bonded point.
     public mutating func updateBondPoint(_ point: BSDPoint) {
         
         guard positionFromPoint(point) != .none else {
@@ -286,43 +283,35 @@ struct BSDPoint {
         bondPoints[ positionFromPoint(point) ] = point
     }
     
-    /// 由点的 level 推断出与本点的方位关系
-    /// - Parameter point: 需要推断的点
-    /// - Returns: 与本点的方位关系
+    /// Infer the position relation by in point's level.
+    /// - Parameter point: In point.
+    /// - Returns: The position relation between `self`.
     public func positionFromPoint(_ point: BSDPoint) -> BondPointPosition {
         
         let inLevel = point.level
         let meLevel = self.level
         
-        // 上
         if inLevel.x == meLevel.x && inLevel.y == meLevel.y - 1 {
             return .top
         }
-        // 左
         else if inLevel.y == meLevel.y && inLevel.x == meLevel.x - 1 {
             return .left
         }
-        // 右
         else if inLevel.y == meLevel.y && inLevel.x == meLevel.x + 1 {
             return .right
         }
-        // 下
         else if inLevel.x == meLevel.x && inLevel.y == meLevel.y + 1 {
             return .bottom
         }
-        // 左上
         else if inLevel.y == meLevel.y - 1 && inLevel.x == meLevel.x - 1 {
             return .topLeft
         }
-        // 左下
         else if inLevel.y == meLevel.y + 1 && inLevel.x == meLevel.x - 1 {
             return .bottomLeft
         }
-        // 右下
         else if inLevel.y == meLevel.y + 1 && inLevel.x == meLevel.x + 1 {
             return .bottomRight
         }
-        // 右上
         else if inLevel.y == meLevel.y - 1 && inLevel.x == meLevel.x + 1 {
             return .topRight
         }
@@ -330,9 +319,9 @@ struct BSDPoint {
         return .none
     }
     
-    /// 限制点溢出
-    /// - Parameter newPoint: 可能要移动到的新点
-    /// - Returns: 限制后的只能到达的点
+    /// Limit point out control.
+    /// - Parameter newPoint: The point will move to.
+    /// - Returns: The limited point that can move to.
     @discardableResult
     public mutating func limitPoint(_ newPoint: CGPoint) -> CGPoint {
         guard newPoint != self.point else {
@@ -498,15 +487,6 @@ class BSDTouchPoint: UIView {
         }
     }
     
-    
-    /*
-     // Only override draw() if you perform custom drawing.
-     // An empty implementation adversely affects performance during animation.
-     override func draw(_ rect: CGRect) {
-     // Drawing code
-     }
-     */
-    
 }
 
 class BSDShapeLayer: CAShapeLayer {
@@ -580,7 +560,6 @@ class BSDShapeLayerManager: NSObject {
             for layer in layers {
                 if let layer = layer as? BSDShapeLayer {
                     if let idx = ids.firstIndex(of: layer.identifier) {
-                        /// 移除已经存在的 shapeLayer 的 id
                         ids.remove(at: idx)
                     }
                 }
