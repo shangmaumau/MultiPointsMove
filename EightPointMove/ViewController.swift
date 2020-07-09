@@ -56,7 +56,7 @@ class ViewController: UIViewController {
                     bsdTP.center = viewPoint
                 }
                 
-                BSDShapeLayerManager.default.updateLayers(point: BSDPointManager.default.pointFromLevel(bsdP.level)!, view: self.view)
+                BSDShapeLayerManager.default.updatePoint(BSDPointManager.default.pointFromLevel(bsdP.level)!, view: self.view)
             }
             
             bsdTP.center = bsdTP.frame.origin

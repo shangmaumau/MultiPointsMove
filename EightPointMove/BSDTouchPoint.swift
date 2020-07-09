@@ -144,7 +144,7 @@ struct BSDSideColor {
     }
     
     public static var empty: BSDSideColor {
-        return Self.init(top: nil, left: nil, right: nil, bottom: nil)
+        Self.init(top: nil, left: nil, right: nil, bottom: nil)
     }
     
     public init(top: UIColor?, left: UIColor?, right: UIColor?, bottom: UIColor?) {
@@ -217,8 +217,8 @@ struct BSDPoint {
     
     /// `bondPoints` 只能取一层，且只能取其 `point` 属性的值。
     ///
-    /// 在更新时，有先后顺序， 因为是值类型的缘故，先更新的，
-    /// 是无法读取到后更新的 `bondPoints` 的。
+    /// 在更新时，是有先后顺序的。因为是值类型的缘故，先更新的，
+    /// 无法读取到后更新的 `bondPoints` ，所以只能取一层。
     public var bondPoints = [BondPointPosition : BSDPoint]()
     
     /// 真实拥有的关联点
@@ -379,89 +379,50 @@ struct BSDPoint {
         
         switch side {
         case .top:
-            result = bsdMax(bondPoints[.top]?.point.y, bondPoints[.topLeft]?.point.y, bondPoints[.topRight]?.point.y)
+            result = bsdMax2(bondPoints[.top]?.point.y, bondPoints[.topLeft]?.point.y, bondPoints[.topRight]?.point.y)
             
         case .left:
-            result = bsdMax(bondPoints[.left]?.point.x, bondPoints[.topLeft]?.point.x, bondPoints[.bottomLeft]?.point.x)
+            result = bsdMax2(bondPoints[.left]?.point.x, bondPoints[.topLeft]?.point.x, bondPoints[.bottomLeft]?.point.x)
             
         case .right:
-            result = bsdMin(bondPoints[.right]?.point.x, bondPoints[.topRight]?.point.x, bondPoints[.bottomRight]?.point.x)
+            result = bsdMin2(bondPoints[.right]?.point.x, bondPoints[.topRight]?.point.x, bondPoints[.bottomRight]?.point.x)
             
         case .bottom:
-            result = bsdMin(bondPoints[.bottom]?.point.y, bondPoints[.bottomLeft]?.point.y, bondPoints[.bottomRight]?.point.y)
+            result = bsdMin2(bondPoints[.bottom]?.point.y, bondPoints[.bottomLeft]?.point.y, bondPoints[.bottomRight]?.point.y)
         }
         
         return result
     }
     
-    private func bsdMin<T: Comparable>(_ f1: T?, _ f2: T?, _ f3: T?) -> T? {
+    private func bsdMax2<T: Comparable>(_ f1: T?...) -> T? {
         
-        var result: T?
-        if let f1 = f1, f2 == nil, f3 == nil {
-            result = f1
+        var ts = [T]()
+        
+        for xiaoT in f1 {
+            if let reT = xiaoT {
+                ts.append(reT)
+            }
         }
         
-        else if let f2 = f2, f1 == nil, f3 == nil {
-            result = f2
-        }
+        ts.sort()
         
-        else if let f3 = f3, f1 == nil, f2 == nil {
-            result = f3
-        }
-        
-        else if let f1 = f1, let f2 = f2, f3 == nil {
-            result = min(f1, f2)
-        }
-        
-        else if let f1 = f1, let f3 = f3, f2 == nil {
-            result = min(f1, f3)
-        }
-        
-        else if let f2 = f2, let f3 = f3, f1 == nil {
-            result = min(f2, f3)
-        }
-        
-        else if let f1 = f1, let f2 = f2, let f3 = f3 {
-            result = min(f1, f2, f3)
-        }
-        
-        return result
+        return ts.last
     }
     
-    private func bsdMax<T: Comparable>(_ f1: T?, _ f2: T?, _ f3: T?) -> T? {
+    private func bsdMin2<T: Comparable>(_ f1: T?...) -> T? {
         
-        var result: T?
-        if let f1 = f1, f2 == nil, f3 == nil {
-            result = f1
+        var ts = [T]()
+        
+        for xiaoT in f1 {
+            if let reT = xiaoT {
+                ts.append(reT)
+            }
         }
         
-        else if let f2 = f2, f1 == nil, f3 == nil {
-            result = f2
-        }
+        ts.sort()
         
-        else if let f3 = f3, f1 == nil, f2 == nil {
-            result = f3
-        }
-        
-        else if let f1 = f1, let f2 = f2, f3 == nil {
-            result = max(f1, f2)
-        }
-        
-        else if let f1 = f1, let f3 = f3, f2 == nil {
-            result = max(f1, f3)
-        }
-        
-        else if let f2 = f2, let f3 = f3, f1 == nil {
-            result = max(f2, f3)
-        }
-        
-        else if let f1 = f1, let f2 = f2, let f3 = f3 {
-            result = max(f1, f2, f3)
-        }
-        
-        return result
+        return ts.first
     }
-    
     
 }
 
@@ -576,18 +537,21 @@ class BSDShapeLayerManager: NSObject {
         for ele in ps {
             identi = identi + " \(ele.x)" + " \(ele.y)"
         }
-        print("identi: \(identi)")
         return identi
     }
     
     public func addPoints(_ points: [BSDPoint], view: UIView) {
-        
         for p_ in points {
             addLayersFrom(point: p_, view: view)
         }
     }
     
-    public func removeLayersFrom(point: BSDPoint, view: UIView) {
+    public func updatePoint(_ point: BSDPoint, view: UIView) {
+        removeLayersFrom(point: point, view: view)
+        addLayersFrom(point: point, view: view)
+    }
+    
+    private func removeLayersFrom(point: BSDPoint, view: UIView) {
         
         var ids = [String]()
         for pp in point.bondPointsR {
@@ -599,22 +563,18 @@ class BSDShapeLayerManager: NSObject {
                 if let layer = layer as? BSDShapeLayer {
                     if ids.firstIndex(of: layer.identifier) != nil {
                         layer.removeFromSuperlayer()
-                        print("移除了一条线", point.point)
                     }
                 }
             }
         }
     }
     
-    public func addLayersFrom(point: BSDPoint, view: UIView) {
+    private func addLayersFrom(point: BSDPoint, view: UIView) {
         
         var ids = [String]()
         for pp in point.bondPointsR {
-            print(point.level, pp.level)
-            
             ids.append( Self.identifierFrom(p1: point.level, p2: pp.level) )
         }
-        print(point.level, ids)
         
         if let layers = view.layer.sublayers {
             for layer in layers {
@@ -636,7 +596,7 @@ class BSDShapeLayerManager: NSObject {
         
     }
     
-    public func addLineLayer(p0: BSDPoint, p1: BSDPoint, view: UIView) {
+    private func addLineLayer(p0: BSDPoint, p1: BSDPoint, view: UIView) {
         
         let linePath = UIBezierPath()
         linePath.move(to: p0.point)
@@ -651,13 +611,5 @@ class BSDShapeLayerManager: NSObject {
         lineLayer.fillColor = nil
         view.layer.addSublayer(lineLayer)
     }
-    
-    
-    public func updateLayers(point: BSDPoint, view: UIView) {
-        
-        removeLayersFrom(point: point, view: view)
-        addLayersFrom(point: point, view: view)
-    }
-
     
 }
