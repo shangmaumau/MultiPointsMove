@@ -104,6 +104,7 @@
 			isa = PBXGroup;
 			children = (
 				E254ED0224B6AF750031281F /* CGExtensions.swift */,
+				E269495B24B45DE0001548DB /* BSDTouchPoint.swift */,
 				E269492B24B407D9001548DB /* AppDelegate.swift */,
 				E269492D24B407D9001548DB /* SceneDelegate.swift */,
 				E269492F24B407D9001548DB /* ViewController.swift */,
@@ -111,7 +112,6 @@
 				E269493424B407DB001548DB /* Assets.xcassets */,
 				E269493624B407DB001548DB /* LaunchScreen.storyboard */,
 				E269493924B407DB001548DB /* Info.plist */,
-				E269495B24B45DE0001548DB /* BSDTouchPoint.swift */,
 			);
 			path = EightPointMove;
 			sourceTree = "<group>";

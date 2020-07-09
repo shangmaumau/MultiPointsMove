@@ -165,7 +165,6 @@ struct BSDSideColor {
     }
 }
 
-
 struct BSDPoint {
     
     /// Init.
