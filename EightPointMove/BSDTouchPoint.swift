@@ -18,7 +18,7 @@ class BSDPointManager: NSObject {
     // MARK:- Add point
     
     /// Add points.
-    /// - Parameter points: Points.
+    /// - Parameter points: In points.
     public func addPoints(_ points: [BSDPoint]) {
         for p_ in points {
             addPoint(p_)
@@ -59,11 +59,11 @@ class BSDPointManager: NSObject {
         
         points.remove(at: points.firstIndex(of: point)!)
 
-        // TODO: Should add the handle of removement.
+        // TODO: Should add the handle after removement.
     }
     
     /// Update point.
-    /// - Note: Call this after all the points added.
+    /// - Note: Call this after all the points were added.
     /// - Parameter point: In point.
     private func updatePoint(_ point: BSDPoint) {
         
