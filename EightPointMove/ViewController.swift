@@ -7,21 +7,6 @@
 
 import UIKit
 
-extension CGPoint {
-    
-    public static func make(_ x: Int, _ y: Int) -> CGPoint {
-        CGPoint(x: x, y: y)
-    }
-    
-    public static func make(_ x: CGFloat, _ y: CGFloat) -> CGPoint {
-        CGPoint(x: x, y: y)
-    }
-    
-    public static func make(_ x: Double, _ y: Double) -> CGPoint {
-        CGPoint(x: x, y: y)
-    }
-}
-
 class ViewController: UIViewController {
     
     var bsdTouch: BSDTouchPoint?
@@ -32,17 +17,6 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         view.backgroundColor = .white
-        
-        var sizeArray: [CGSize] = [ .init(width: 7, height: 8), .init(width: 20, height: 20) ]
-        
-        print("before ", sizeArray)
-        for (idx, var lSize) in sizeArray.enumerated() {
-            lSize.width += 5
-            sizeArray[idx] = lSize
-        }
-        
-        print("after", sizeArray)
-        
         
         let sideColors: [BSDSideColor] = [ .make(nil, nil, .red, .blue),
                                            .make(.blue, nil, .red, nil),
@@ -81,6 +55,8 @@ class ViewController: UIViewController {
                 UIView.animate(withDuration: 0.1) {
                     bsdTP.center = viewPoint
                 }
+                
+                BSDShapeLayerManager.default.updateLayers(point: BSDPointManager.default.pointFromLevel(bsdP.level)!, view: self.view)
             }
             
             bsdTP.center = bsdTP.frame.origin
@@ -90,9 +66,10 @@ class ViewController: UIViewController {
             bsdTouches.append(bsdTP)
         }
         
-        
         BSDPointManager.default.addPoints(points)
         BSDPointManager.default.setUpAllPoints()
+        
+        BSDShapeLayerManager.default.addPoints(BSDPointManager.default.points, view: view)
         
         
     }

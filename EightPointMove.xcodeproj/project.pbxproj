@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E254ED0324B6AF750031281F /* CGExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E254ED0224B6AF750031281F /* CGExtensions.swift */; };
 		E269492C24B407D9001548DB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E269492B24B407D9001548DB /* AppDelegate.swift */; };
 		E269492E24B407D9001548DB /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E269492D24B407D9001548DB /* SceneDelegate.swift */; };
 		E269493024B407D9001548DB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E269492F24B407D9001548DB /* ViewController.swift */; };
@@ -36,6 +37,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		E254ED0224B6AF750031281F /* CGExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGExtensions.swift; sourceTree = "<group>"; };
 		E269492824B407D9001548DB /* EightPointMove.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EightPointMove.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E269492B24B407D9001548DB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E269492D24B407D9001548DB /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -101,6 +103,7 @@
 		E269492A24B407D9001548DB /* EightPointMove */ = {
 			isa = PBXGroup;
 			children = (
+				E254ED0224B6AF750031281F /* CGExtensions.swift */,
 				E269492B24B407D9001548DB /* AppDelegate.swift */,
 				E269492D24B407D9001548DB /* SceneDelegate.swift */,
 				E269492F24B407D9001548DB /* ViewController.swift */,
@@ -262,6 +265,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E269495C24B45DE0001548DB /* BSDTouchPoint.swift in Sources */,
+				E254ED0324B6AF750031281F /* CGExtensions.swift in Sources */,
 				E269493024B407D9001548DB /* ViewController.swift in Sources */,
 				E269492C24B407D9001548DB /* AppDelegate.swift in Sources */,
 				E269492E24B407D9001548DB /* SceneDelegate.swift in Sources */,

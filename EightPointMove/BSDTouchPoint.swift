@@ -100,7 +100,7 @@ class BSDPointManager: NSObject {
     /// 按照等级从数组中取出相应元素
     /// - Parameter level: 要取出的元素的等级
     /// - Returns: 等级对应的点
-    private func pointFromLevel(_ level: CGPoint) -> BSDPoint? {
+    public func pointFromLevel(_ level: CGPoint) -> BSDPoint? {
         
         for point in points {
             if point.level == level {
@@ -220,6 +220,27 @@ struct BSDPoint {
     /// 在更新时，有先后顺序， 因为是值类型的缘故，先更新的，
     /// 是无法读取到后更新的 `bondPoints` 的。
     public var bondPoints = [BondPointPosition : BSDPoint]()
+    
+    /// 真实拥有的关联点
+    public var bondPointsR: [BSDPoint] {
+        
+        var bsds = [BSDPoint]()
+        if let top = bondPoints[.top] {
+            bsds.append(top)
+        }
+        if let left = bondPoints[.left] {
+            bsds.append(left)
+        }
+        if let right = bondPoints[.right] {
+            bsds.append(right)
+        }
+        if let bottom = bondPoints[.bottom] {
+            bsds.append(bottom)
+        }
+        
+        return bsds
+    }
+    
     public var bondColors: [BondPointPosition : UIColor?] {
         [ .top: sideColor.top, .left: sideColor.left, .right: sideColor.right, .bottom: sideColor.bottom]
     }
@@ -268,7 +289,7 @@ struct BSDPoint {
     /// 由点的 level 推断出与本点的方位关系
     /// - Parameter point: 需要推断的点
     /// - Returns: 与本点的方位关系
-    private func positionFromPoint(_ point: BSDPoint) -> BondPointPosition {
+    public func positionFromPoint(_ point: BSDPoint) -> BondPointPosition {
         
         let inLevel = point.level
         let meLevel = self.level
@@ -279,10 +300,6 @@ struct BSDPoint {
         }
         // 左
         else if inLevel.y == meLevel.y && inLevel.x == meLevel.x - 1 {
-            // 横轴最小点为 0，不能小于它
-            if meLevel.x == 0 {
-                return .none
-            }
             return .left
         }
         // 右
@@ -291,13 +308,8 @@ struct BSDPoint {
         }
         // 下
         else if inLevel.x == meLevel.x && inLevel.y == meLevel.y + 1 {
-            // 纵轴最小点为 0，不能小于此点
-            if meLevel.y == 0 {
-                return .none
-            }
             return .bottom
         }
-        
         // 左上
         else if inLevel.y == meLevel.y - 1 && inLevel.x == meLevel.x - 1 {
             return .topLeft
@@ -533,5 +545,119 @@ class BSDTouchPoint: UIView {
      // Drawing code
      }
      */
+    
+}
+
+class BSDShapeLayer: CAShapeLayer {
+    
+    public var identifier: String!
+    
+    init(identifier: String) {
+        super.init()
+        self.identifier = identifier
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+}
+
+class BSDShapeLayerManager: NSObject {
+    
+    public static let `default`: BSDShapeLayerManager = {
+       return BSDShapeLayerManager()
+    }()
+    
+    private static func identifierFrom(p1: CGPoint, p2: CGPoint) -> String {
+        var ps = [ p1, p2 ]
+        ps.sort()
+        var identi = ""
+        for ele in ps {
+            identi = identi + " \(ele.x)" + " \(ele.y)"
+        }
+        print("identi: \(identi)")
+        return identi
+    }
+    
+    public func addPoints(_ points: [BSDPoint], view: UIView) {
+        
+        for p_ in points {
+            addLayersFrom(point: p_, view: view)
+        }
+    }
+    
+    public func removeLayersFrom(point: BSDPoint, view: UIView) {
+        
+        var ids = [String]()
+        for pp in point.bondPointsR {
+            ids.append( Self.identifierFrom(p1: point.level, p2: pp.level) )
+        }
+        
+        if let layers = view.layer.sublayers {
+            for layer in layers {
+                if let layer = layer as? BSDShapeLayer {
+                    if ids.firstIndex(of: layer.identifier) != nil {
+                        layer.removeFromSuperlayer()
+                        print("移除了一条线", point.point)
+                    }
+                }
+            }
+        }
+    }
+    
+    public func addLayersFrom(point: BSDPoint, view: UIView) {
+        
+        var ids = [String]()
+        for pp in point.bondPointsR {
+            print(point.level, pp.level)
+            
+            ids.append( Self.identifierFrom(p1: point.level, p2: pp.level) )
+        }
+        print(point.level, ids)
+        
+        if let layers = view.layer.sublayers {
+            for layer in layers {
+                if let layer = layer as? BSDShapeLayer {
+                    if let idx = ids.firstIndex(of: layer.identifier) {
+                        /// 移除已经存在的 shapeLayer 的 id
+                        ids.remove(at: idx)
+                    }
+                }
+            }
+        }
+        
+        for pp in point.bondPointsR {
+            
+            if ids.firstIndex(of: Self.identifierFrom(p1: point.level, p2: pp.level)) != nil {
+                addLineLayer(p0: point, p1: pp, view: view)
+            }
+        }
+        
+    }
+    
+    public func addLineLayer(p0: BSDPoint, p1: BSDPoint, view: UIView) {
+        
+        let linePath = UIBezierPath()
+        linePath.move(to: p0.point)
+        linePath.addLine(to: p1.point)
+        
+        let color = p0.bondColors[ p0.positionFromPoint(p1) ]
+        
+        let lineLayer = BSDShapeLayer.init(identifier: Self.identifierFrom(p1: p0.level, p2: p1.level))
+        lineLayer.lineWidth = 5.0
+        lineLayer.strokeColor = color!!.cgColor
+        lineLayer.path = linePath.cgPath
+        lineLayer.fillColor = nil
+        view.layer.addSublayer(lineLayer)
+    }
+    
+    
+    public func updateLayers(point: BSDPoint, view: UIView) {
+        
+        removeLayersFrom(point: point, view: view)
+        addLayersFrom(point: point, view: view)
+    }
+
     
 }
