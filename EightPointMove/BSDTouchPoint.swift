@@ -612,7 +612,7 @@ struct BSDPoint {
         // 对于右侧限制，不让此点靠近距离右线（两根线四个点）最近点的右边 10
         if let tar = nearestOf(p1: near12, p2: near22) {
             
-            if newPoint.x < tar.x {
+            if newPoint.x > tar.x {
                 outPoint.x = tar.x - margin
             }
         }
@@ -621,7 +621,7 @@ struct BSDPoint {
         var near13: CGPoint?
         var near23: CGPoint?
         
-        // 右上线的限制点
+        // 上左 线的限制点
         if let topright = bondPoints[.topLeft]?.point,
            let right = bondPoints[.top]?.point,
            let line = CGLine(p1: topright, p2: right) {
@@ -630,7 +630,7 @@ struct BSDPoint {
             
         }
         
-        // 右下线的限制点
+        // 上右 线的限制点
         if let right = bondPoints[.top]?.point,
            let bottomright = bondPoints[.topRight]?.point,
            let line = CGLine(p1: bottomright, p2: right) {
@@ -652,7 +652,7 @@ struct BSDPoint {
         var near14: CGPoint?
         var near24: CGPoint?
         
-        // 右上线的限制点
+        // 下右 线的限制点
         if let topright = bondPoints[.bottomRight]?.point,
            let right = bondPoints[.bottom]?.point,
            let line = CGLine(p1: topright, p2: right) {
@@ -661,7 +661,7 @@ struct BSDPoint {
             
         }
         
-        // 右下线的限制点
+        // 下左 线的限制点
         if let right = bondPoints[.bottom]?.point,
            let bottomright = bondPoints[.bottomLeft]?.point,
            let line = CGLine(p1: bottomright, p2: right) {
