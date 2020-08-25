@@ -7,6 +7,187 @@
 
 import UIKit
 
+public enum GestureDirection: Int {
+    case up, down, left, right, none
+    public var isVertical: Bool { return [.up, .down].contains(self) }
+    public var isHorizontal: Bool { return !isVertical }
+}
+
+public extension UIPanGestureRecognizer {
+    
+    var direction: GestureDirection {
+        let velocity = self.velocity(in: view)
+        let isVertical = abs(velocity.y) > abs(velocity.x)
+        switch (isVertical, velocity.x, velocity.y) {
+        case (true, _, let y) where y < 0: return .up
+        case (true, _, let y) where y > 0: return .down
+        case (false, let x, _) where x > 0: return .right
+        case (false, let x, _) where x < 0: return .left
+        default: return .none
+        }
+    }
+    
+}
+
+private func distanceOf(p1: CGPoint, p2: CGPoint) -> CGFloat {
+    return sqrt( pow(p1.x - p2.x, 2) + pow(p1.y - p2.y, 2) )
+}
+
+struct CGLine {
+    
+    public var p1: CGPoint
+    public var p2: CGPoint
+    
+    public var type: LineType {
+        
+        if p1.x == p2.x {
+            
+            return .vert
+            
+        } else if p1.y == p2.y {
+            
+            return .horiz
+            
+        } else {
+            
+            return .normal
+        }
+    }
+    
+    enum LineType {
+        case normal
+        case horiz
+        case vert
+    }
+    
+    public init?(p1: CGPoint, p2: CGPoint) {
+        
+        if p1 == p2 {
+            return nil
+        }
+        
+        self.p1 = p1
+        self.p2 = p2
+    }
+    
+    public var theLine: ((CGFloat) -> CGFloat) {
+        
+        func line(x: CGFloat) -> CGFloat {
+            return (x - p1.x) / (p2.x - p1.x) * (p2.y - p1.y) + p1.y
+        }
+        
+        return line(x:)
+    }
+    
+    public var k: CGFloat {
+        
+        if type == .vert {
+            return .infinity
+        }
+        
+        return (p1.y - p2.y) / (p1.x - p2.x)
+    }
+    
+    public var b: CGFloat {
+        p1.y - k * p1.x
+    }
+    
+    public var x_line: CGFloat? {
+        if type == .vert {
+            return p1.x
+        }
+        return nil
+    }
+    
+    public var y_line: CGFloat? {
+        if type == .horiz {
+            return p1.y
+        }
+        return nil
+    }
+    
+    public var verticalK: CGFloat {
+        -1 / k
+    }
+    
+    public func verticalB(point: CGPoint) -> CGFloat {
+        point.y - verticalK * point.x
+    }
+    
+    public func nearpointOf(point: CGPoint) -> CGPoint {
+        
+        if type != .normal {
+            return pedal(point: point)
+        }
+        
+        let p1 = CGPoint(x: point.x, y: k * point.x + b)
+        let p2 = CGPoint(x: (point.y - b) / k, y: point.y)
+        
+        let dis1 = distanceOf(p1: p1, p2: point)
+        let dis2 = distanceOf(p1: p2, p2: point)
+        
+        if dis1 < dis2 {
+            return p1
+        }
+        
+        return p2
+    }
+    
+    public func pedal(point: CGPoint) -> CGPoint {
+        
+        switch type {
+        
+        case .normal:
+            
+            let k1 = k
+            let b1 = b
+            
+            let k2 = verticalK
+            let b2 = verticalB(point: point)
+            
+            let tx = (b1-b2)/(k2-k1)
+            let ty = tx * k1 + b1
+            
+            return CGPoint(x: tx, y: ty)
+            
+        case .vert:
+            
+            return CGPoint(x: x_line!, y: point.y)
+            
+        case .horiz:
+            
+            return CGPoint(x: point.x, y: y_line!)
+        }
+        
+    }
+    
+}
+
+public enum PointVectorRelation {
+    case clockwise
+    case anticlockwise
+    case onit
+}
+
+func relation(point: CGPoint, line: CGLine) -> PointVectorRelation {
+    
+    let p1 = line.p1
+    let p2 = line.p2
+    let p3 = point
+    
+    let a = (p1.x - p3.x) * (p2.y - p3.y) - (p1.y - p3.y) * (p2.x - p3.x)
+    
+    if a > 0 {
+        return .clockwise
+    } else if a < 0 {
+        return .anticlockwise
+    } else {
+        return .onit
+    }
+}
+
+
+
 class BSDPointManager: NSObject {
     
     public static let `default`: BSDPointManager = {
@@ -58,7 +239,7 @@ class BSDPointManager: NSObject {
         }
         
         points.remove(at: points.firstIndex(of: point)!)
-
+        
         // TODO: Should add the handle after removement.
     }
     
@@ -81,10 +262,10 @@ class BSDPointManager: NSObject {
     
     // MARK:- Limit point.
     
-    public func limitPoint(_ newPoint: BSDPoint) -> BSDPoint? {
+    public func limitPoint(_ newPoint: BSDPoint, _ direction: GestureDirection) -> BSDPoint? {
         
         if var nP = pointFromLevel(newPoint.level) {
-            nP.limitPoint(newPoint.point)
+            nP.limitPoint(newPoint.point, direction)
             updatePoint(nP)
             return pointFromLevel(nP.level)
         }
@@ -322,15 +503,189 @@ struct BSDPoint {
     /// - Parameter newPoint: The point will move to.
     /// - Returns: The limited point that can move to.
     @discardableResult
-    public mutating func limitPoint(_ newPoint: CGPoint) -> CGPoint {
+    public mutating func limitPoint(_ newPoint: CGPoint, _ direction: GestureDirection) -> CGPoint {
         guard newPoint != self.point else {
             return self.point
         }
+        
+        debugPrint("newPoint: \(newPoint)")
         
         var outPoint = newPoint
         
         let margin: CGFloat = 10.0
         
+        /// 求出更近的点
+        func nearestOf(p1: CGPoint?, p2: CGPoint?) -> CGPoint? {
+            
+            var dis1: CGFloat?
+            var dis2: CGFloat?
+            
+            if let point1 = p1 {
+                dis1 = distanceOf(p1: point1, p2: newPoint)
+            }
+            
+            if let point2 = p2 {
+                dis2 = distanceOf(p1: point2, p2: newPoint)
+            }
+            
+            if dis1 != nil && dis2 == nil {
+                return p1
+            }
+            else if dis2 != nil && dis1 == nil {
+                return p2
+            }
+            else if dis1 == nil && dis2 == nil {
+                return nil
+            }
+            else if dis1! >= dis2! {
+                return p2
+            }
+            else if dis2! > dis1! {
+                return p1
+            }
+            
+            return nil
+        }
+        
+        
+        // new solution
+        
+        debugPrint("点往左边移动")
+        
+        var near11: CGPoint?
+        var near21: CGPoint?
+        
+        // 左上线的限制点
+        if let left = bondPoints[.left]?.point,
+           let topleft = bondPoints[.topLeft]?.point,
+           let line = CGLine(p1: left, p2: topleft) {
+            
+            near11 = line.nearpointOf(point: newPoint)
+            
+            debugPrint("near1 \(near11!)")
+        }
+        
+        // 左下线的限制点
+        if let left = bondPoints[.bottomLeft]?.point,
+           let bottomLeft = bondPoints[.left]?.point,
+           let line = CGLine(p1: bottomLeft, p2: left) {
+            
+            near21 = line.nearpointOf(point: newPoint)
+            
+            debugPrint("near2 \(near21!)")
+        }
+        
+        // 横轴方向，限制 x
+        // 对于左侧限制，不让此点靠近距离左线最近点的右边 10
+        if let tar = nearestOf(p1: near11, p2: near21) {
+            
+            debugPrint("tar \(tar)")
+            
+            if newPoint.x < tar.x {
+                outPoint.x = tar.x + margin
+            }
+        }
+        
+        
+        var near12: CGPoint?
+        var near22: CGPoint?
+        
+        // 右上线的限制点
+        if let topright = bondPoints[.topRight]?.point,
+           let right = bondPoints[.right]?.point,
+           let line = CGLine(p1: topright, p2: right) {
+            
+            near12 = line.nearpointOf(point: newPoint)
+            
+        }
+        
+        // 右下线的限制点
+        if let right = bondPoints[.right]?.point,
+           let bottomright = bondPoints[.bottomRight]?.point,
+           let line = CGLine(p1: bottomright, p2: right) {
+            
+            near22 = line.nearpointOf(point: newPoint)
+            
+        }
+        
+        // 横轴方向，限制 x
+        // 对于右侧限制，不让此点靠近距离右线（两根线四个点）最近点的右边 10
+        if let tar = nearestOf(p1: near12, p2: near22) {
+            
+            if newPoint.x < tar.x {
+                outPoint.x = tar.x - margin
+            }
+        }
+        
+        
+        var near13: CGPoint?
+        var near23: CGPoint?
+        
+        // 右上线的限制点
+        if let topright = bondPoints[.topLeft]?.point,
+           let right = bondPoints[.top]?.point,
+           let line = CGLine(p1: topright, p2: right) {
+            
+            near13 = line.nearpointOf(point: newPoint)
+            
+        }
+        
+        // 右下线的限制点
+        if let right = bondPoints[.top]?.point,
+           let bottomright = bondPoints[.topRight]?.point,
+           let line = CGLine(p1: bottomright, p2: right) {
+            
+            near23 = line.nearpointOf(point: newPoint)
+            
+        }
+        
+        // 横轴方向，限制 x
+        // 对于右侧限制，不让此点靠近距离右线（两根线四个点）最近点的右边 10
+        if let tar = nearestOf(p1: near13, p2: near23) {
+            
+            if newPoint.y < tar.y {
+                outPoint.y = tar.y + margin
+            }
+        }
+        
+        
+        var near14: CGPoint?
+        var near24: CGPoint?
+        
+        // 右上线的限制点
+        if let topright = bondPoints[.bottomRight]?.point,
+           let right = bondPoints[.bottom]?.point,
+           let line = CGLine(p1: topright, p2: right) {
+            
+            near14 = line.nearpointOf(point: newPoint)
+            
+        }
+        
+        // 右下线的限制点
+        if let right = bondPoints[.bottom]?.point,
+           let bottomright = bondPoints[.bottomLeft]?.point,
+           let line = CGLine(p1: bottomright, p2: right) {
+            
+            near24 = line.nearpointOf(point: newPoint)
+            
+        }
+        
+        // 横轴方向，限制 x
+        // 对于右侧限制，不让此点靠近距离右线（两根线四个点）最近点的右边 10
+        if let tar = nearestOf(p1: near14, p2: near24) {
+            
+            if newPoint.y > tar.y {
+                outPoint.y = tar.y - margin
+            }
+        }
+        
+        debugPrint("outPoint: \(outPoint)")
+        self.point = outPoint
+        
+        return outPoint
+        
+        
+        // old solution
         if let topLimit = limitSide(.top) {
             if newPoint.y < topLimit {
                 outPoint.y = topLimit + margin
@@ -477,7 +832,10 @@ class BSDTouchPoint: UIView {
             
             point.point = sender.location(in: self.superview)
             
-            if let limitPoint = BSDPointManager.default.limitPoint(point) {
+            let direction = sender.direction
+            debugPrint("pan direction \(direction)")
+            
+            if let limitPoint = BSDPointManager.default.limitPoint(point, direction) {
                 // 更新 touch 的 point
                 self.point = limitPoint
                 panBlock?(sender.state, limitPoint.point)
@@ -506,7 +864,7 @@ class BSDShapeLayer: CAShapeLayer {
 class BSDShapeLayerManager: NSObject {
     
     public static let `default`: BSDShapeLayerManager = {
-       return BSDShapeLayerManager()
+        return BSDShapeLayerManager()
     }()
     
     private static func identifierFrom(p1: CGPoint, p2: CGPoint) -> String {
