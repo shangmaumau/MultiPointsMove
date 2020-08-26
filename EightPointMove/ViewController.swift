@@ -10,14 +10,14 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    var bsdClbrView: BSDClbrView!
+    var bsdClbrView: EPMView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         view.backgroundColor = .white
         
-        bsdClbrView = BSDClbrView(frame: view.frame)
+        bsdClbrView = EPMView(frame: view.frame)
         
         view.addSubview(bsdClbrView)
         
