@@ -45,11 +45,10 @@ class EPMTouchView: UIView {
     }
     
     @objc private func panEvent(_ sender: UIPanGestureRecognizer) {
+        
         guard sender.view != nil else {
             return
         }
-        
-        // superview?.bringSubviewToFront(self)
         
         if sender.state == .began {
             backgroundColor = UIColor.cyan.withAlphaComponent(0.4)

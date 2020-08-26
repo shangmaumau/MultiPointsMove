@@ -345,6 +345,7 @@ struct EPMPoint {
         }
         
         if let left = bondPoints[.left]?.point {
+            
             if point.y <= left.y {
                 limitLeftToTopLeft(&outPoint)
             } else {
@@ -364,6 +365,7 @@ struct EPMPoint {
         }
         
         if let bottom = bondPoints[.bottom]?.point {
+            
             if point.x >= bottom.x {
                 limitBottomRightToBottom(&outPoint)
             } else {
@@ -387,12 +389,10 @@ struct EPMPoint {
                 limitTopRightToRight(&outPoint)
             }
             
-            // 有右无上限右下
             if bondPoints[.top]?.point == nil {
                 limitRightToBottomRight(&outPoint)
             }
             
-            // 有右无下限右上
             if bondPoints[.bottom]?.point == nil {
                 limitTopRightToRight(&outPoint)
             }
