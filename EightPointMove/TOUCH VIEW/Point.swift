@@ -169,263 +169,238 @@ struct EPMPoint {
             return self.point
         }
         
-        debugPrint("newPoint: \(newPoint)")
-        
         var outPoint = newPoint
         
-        let margin: CGFloat = 10.0
-        
-        /// 求出更近的点
-        func nearestOf(p1: CGPoint?, p2: CGPoint?) -> CGPoint? {
-            
-            var dis1: CGFloat?
-            var dis2: CGFloat?
-            
-            if let point1 = p1 {
-                dis1 = distanceOf(p1: point1, p2: newPoint)
-            }
-            
-            if let point2 = p2 {
-                dis2 = distanceOf(p1: point2, p2: newPoint)
-            }
-            
-            if dis1 != nil && dis2 == nil {
-                return p1
-            }
-            else if dis2 != nil && dis1 == nil {
-                return p2
-            }
-            else if dis1 == nil && dis2 == nil {
-                return nil
-            }
-            else if dis1! >= dis2! {
-                return p2
-            }
-            else if dis2! > dis1! {
-                return p1
-            }
-            
-            return nil
-        }
-        
-        
-        // new solution
-        
-        debugPrint("点往左边移动")
-        
-        var near11: CGPoint?
-        var near21: CGPoint?
-        
-        // 左上线的限制点
-        if let left = bondPoints[.left]?.point,
-           let topleft = bondPoints[.topLeft]?.point,
-           let line = CGLine(p1: left, p2: topleft) {
-            
-            near11 = line.nearpointOf(point: newPoint)
-            
-            debugPrint("near1 \(near11!)")
-        }
-        
-        // 左下线的限制点
-        if let left = bondPoints[.bottomLeft]?.point,
-           let bottomLeft = bondPoints[.left]?.point,
-           let line = CGLine(p1: bottomLeft, p2: left) {
-            
-            near21 = line.nearpointOf(point: newPoint)
-            
-            debugPrint("near2 \(near21!)")
-        }
-        
-        // 横轴方向，限制 x
-        // 对于左侧限制，不让此点靠近距离左线最近点的右边 10
-        if let tar = nearestOf(p1: near11, p2: near21) {
-            
-            debugPrint("tar \(tar)")
-            
-            if newPoint.x < tar.x {
-                outPoint.x = tar.x + margin
-            }
-        }
-        
-        
-        var near12: CGPoint?
-        var near22: CGPoint?
-        
-        // 右上线的限制点
-        if let topright = bondPoints[.topRight]?.point,
-           let right = bondPoints[.right]?.point,
-           let line = CGLine(p1: topright, p2: right) {
-            
-            near12 = line.nearpointOf(point: newPoint)
-            
-        }
-        
-        // 右下线的限制点
-        if let right = bondPoints[.right]?.point,
-           let bottomright = bondPoints[.bottomRight]?.point,
-           let line = CGLine(p1: bottomright, p2: right) {
-            
-            near22 = line.nearpointOf(point: newPoint)
-            
-        }
-        
-        // 横轴方向，限制 x
-        // 对于右侧限制，不让此点靠近距离右线（两根线四个点）最近点的右边 10
-        if let tar = nearestOf(p1: near12, p2: near22) {
-            
-            if newPoint.x > tar.x {
-                outPoint.x = tar.x - margin
-            }
-        }
-        
-        
-        var near13: CGPoint?
-        var near23: CGPoint?
-        
-        // 上左 线的限制点
-        if let topright = bondPoints[.topLeft]?.point,
-           let right = bondPoints[.top]?.point,
-           let line = CGLine(p1: topright, p2: right) {
-            
-            near13 = line.nearpointOf(point: newPoint)
-            
-        }
-        
-        // 上右 线的限制点
-        if let right = bondPoints[.top]?.point,
-           let bottomright = bondPoints[.topRight]?.point,
-           let line = CGLine(p1: bottomright, p2: right) {
-            
-            near23 = line.nearpointOf(point: newPoint)
-            
-        }
-        
-        // 横轴方向，限制 x
-        // 对于右侧限制，不让此点靠近距离右线（两根线四个点）最近点的右边 10
-        if let tar = nearestOf(p1: near13, p2: near23) {
-            
-            if newPoint.y < tar.y {
-                outPoint.y = tar.y + margin
-            }
-        }
-        
-        
-        var near14: CGPoint?
-        var near24: CGPoint?
-        
-        // 下右 线的限制点
-        if let topright = bondPoints[.bottomRight]?.point,
-           let right = bondPoints[.bottom]?.point,
-           let line = CGLine(p1: topright, p2: right) {
-            
-            near14 = line.nearpointOf(point: newPoint)
-            
-        }
-        
-        // 下左 线的限制点
-        if let right = bondPoints[.bottom]?.point,
-           let bottomright = bondPoints[.bottomLeft]?.point,
-           let line = CGLine(p1: bottomright, p2: right) {
-            
-            near24 = line.nearpointOf(point: newPoint)
-            
-        }
-        
-        // 横轴方向，限制 x
-        // 对于右侧限制，不让此点靠近距离右线（两根线四个点）最近点的右边 10
-        if let tar = nearestOf(p1: near14, p2: near24) {
-            
-            if newPoint.y > tar.y {
-                outPoint.y = tar.y - margin
-            }
-        }
-        
-        debugPrint("outPoint: \(outPoint)")
+        // best solution
+        limit(direction: direction, of: &outPoint)
+
         self.point = outPoint
         
         return outPoint
-        
-        
-        // old solution
-//        if let topLimit = limitSide(.top) {
-//            if newPoint.y < topLimit {
-//                outPoint.y = topLimit + margin
-//            }
-//        }
-//
-//        if let leftLimit = limitSide(.left) {
-//            if newPoint.x < leftLimit {
-//                outPoint.x = leftLimit + margin
-//            }
-//        }
-//
-//        if let rightLimit = limitSide(.right) {
-//            if newPoint.x > rightLimit {
-//                outPoint.x = rightLimit - margin
-//            }
-//        }
-//
-//        if let bottomLimit = limitSide(.bottom) {
-//            if newPoint.y > bottomLimit {
-//                outPoint.y = bottomLimit - margin
-//            }
-//        }
-//
-//        self.point = outPoint
-//
-//        return outPoint
     }
-    
-    
-    private func limitSide(_ side: Side) -> CGFloat? {
-        
-        var result: CGFloat?
-        
-        switch side {
-        case .top:
-            result = bsdMax2(bondPoints[.top]?.point.y, bondPoints[.topLeft]?.point.y, bondPoints[.topRight]?.point.y)
-            
-        case .left:
-            result = bsdMax2(bondPoints[.left]?.point.x, bondPoints[.topLeft]?.point.x, bondPoints[.bottomLeft]?.point.x)
-            
-        case .right:
-            result = bsdMin2(bondPoints[.right]?.point.x, bondPoints[.topRight]?.point.x, bondPoints[.bottomRight]?.point.x)
-            
-        case .bottom:
-            result = bsdMin2(bondPoints[.bottom]?.point.y, bondPoints[.bottomLeft]?.point.y, bondPoints[.bottomRight]?.point.y)
+
+    private func limit(direction direc: GestureDirection, of point: inout CGPoint) {
+
+        let margin: CGFloat = 10.0
+
+        var outPoint = point
+
+        // 顶边：左
+        func limitTopLeftToTop(_ p: inout CGPoint) {
+
+            var near: CGPoint?
+            if let topLeft = bondPoints[.topLeft]?.point,
+               let top = bondPoints[.top]?.point,
+               let line = CGLine(p1: topLeft, p2: top) {
+
+                near = line.nearPointOf(point: p, type: .vert)
+
+            }
+
+            if let near = near, p.y <= near.y {
+                p.y = near.y + margin
+            }
         }
-        
-        return result
-    }
-    
-    private func bsdMax2<T: Comparable>(_ f1: T?...) -> T? {
-        
-        var ts = [T]()
-        
-        for xiaoT in f1 {
-            if let reT = xiaoT {
-                ts.append(reT)
+
+        // 顶边：右
+        func limitTopToTopRight(_ p: inout CGPoint) {
+
+            var near: CGPoint?
+
+            if let top = bondPoints[.top]?.point,
+               let topRight = bondPoints[.topRight]?.point,
+               let line = CGLine(p1: top, p2: topRight) {
+
+                near = line.nearPointOf(point: p, type: .vert)
+
+            }
+
+            if let near = near, p.y <= near.y {
+                p.y = near.y + margin
+            }
+        }
+
+        // 右边：上
+        func limitTopRightToRight(_ p: inout CGPoint) {
+
+            var near: CGPoint?
+
+            if let topright = bondPoints[.topRight]?.point,
+               let right = bondPoints[.right]?.point,
+               let line = CGLine(p1: topright, p2: right) {
+
+                near = line.nearPointOf(point: p, type: .horiz)
+
+            }
+
+            if let near = near, p.x >= near.x {
+                p.x = near.x - margin
+            }
+
+        }
+
+        // 右边：下
+        func limitRightToBottomRight(_ p: inout CGPoint) {
+
+            var near: CGPoint?
+            if let right = bondPoints[.right]?.point,
+               let bottomright = bondPoints[.bottomRight]?.point,
+               let line = CGLine(p1: bottomright, p2: right) {
+
+                near = line.nearPointOf(point: p, type: .horiz)
+
+            }
+
+            if let near = near, p.x >= near.x {
+                p.x = near.x - margin
+            }
+        }
+
+        // 底边：右
+        func limitBottomRightToBottom(_ p: inout CGPoint) {
+
+            var near: CGPoint?
+
+            if let bottomRight = bondPoints[.bottomRight]?.point,
+               let bottom = bondPoints[.bottom]?.point,
+               let line = CGLine(p1: bottomRight, p2: bottom) {
+
+                near = line.nearPointOf(point: p, type: .vert)
+
+            }
+
+            if let near = near, p.y >= near.y {
+                p.y = near.y - margin
+            }
+        }
+
+        // 底边：左
+        func limitBottomToBottomLeft(_ p: inout CGPoint) {
+
+            var near: CGPoint?
+
+            if let bottom = bondPoints[.bottom]?.point,
+               let bottomLeft = bondPoints[.bottomLeft]?.point,
+               let line = CGLine(p1: bottom, p2: bottomLeft) {
+
+                near = line.nearPointOf(point: p, type: .vert)
+
+            }
+
+            if let near = near, p.y >= near.y {
+                p.y = near.y - margin
+            }
+        }
+
+        // 左边：下
+        func limitBottomLeftToLeft(_ p: inout CGPoint) {
+
+            var near: CGPoint?
+
+            // 左下线的限制点
+            if let bottomLeft = bondPoints[.bottomLeft]?.point,
+               let left = bondPoints[.left]?.point,
+               let line = CGLine(p1: bottomLeft, p2: left) {
+
+                near = line.nearPointOf(point: p, type: .horiz)
+            }
+
+            if let near = near, p.x <= near.x {
+                p.x = near.x + margin
+            }
+        }
+
+        // 左边：上
+        func limitLeftToTopLeft(_ p: inout CGPoint) {
+            var near: CGPoint?
+
+            // 左上线的限制点
+            if let left = bondPoints[.left]?.point,
+               let topleft = bondPoints[.topLeft]?.point,
+               let line = CGLine(p1: left, p2: topleft) {
+
+                near = line.nearPointOf(point: point, type: .horiz)
+            }
+
+            if let near = near, p.x <= near.x {
+                p.x = near.x + margin
             }
         }
         
-        ts.sort()
-        
-        return ts.last
-    }
-    
-    private func bsdMin2<T: Comparable>(_ f1: T?...) -> T? {
-        
-        var ts = [T]()
-        
-        for xiaoT in f1 {
-            if let reT = xiaoT {
-                ts.append(reT)
+        if let top = bondPoints[.top]?.point {
+            
+            if point.x <= top.x {
+                limitTopLeftToTop(&outPoint)
+            } else {
+                limitTopToTopRight(&outPoint)
+            }
+            
+            if bondPoints[.left]?.point == nil {
+                limitTopToTopRight(&outPoint)
+            }
+            
+            if bondPoints[.right]?.point == nil {
+                limitTopLeftToTop(&outPoint)
             }
         }
         
-        ts.sort()
+        if let left = bondPoints[.left]?.point {
+            if point.y <= left.y {
+                limitLeftToTopLeft(&outPoint)
+            } else {
+                limitBottomLeftToLeft(&outPoint)
+            }
+            
+            // 有左无上限左下
+            if bondPoints[.top]?.point == nil {
+                limitBottomLeftToLeft(&outPoint)
+            }
+            
+            // 有左无下限左上
+            if bondPoints[.bottom]?.point == nil {
+                limitLeftToTopLeft(&outPoint)
+            }
+            
+        }
         
-        return ts.first
+        if let bottom = bondPoints[.bottom]?.point {
+            if point.x >= bottom.x {
+                limitBottomRightToBottom(&outPoint)
+            } else {
+                limitBottomToBottomLeft(&outPoint)
+            }
+            
+            if bondPoints[.left]?.point == nil {
+                limitBottomRightToBottom(&outPoint)
+            }
+            
+            if bondPoints[.right]?.point == nil {
+                limitBottomToBottomLeft(&outPoint)
+            }
+        }
+        
+        if let right = bondPoints[.right]?.point {
+            
+            if point.y >= right.y {
+                limitRightToBottomRight(&outPoint)
+            } else {
+                limitTopRightToRight(&outPoint)
+            }
+            
+            // 有右无上限右下
+            if bondPoints[.top]?.point == nil {
+                limitRightToBottomRight(&outPoint)
+            }
+            
+            // 有右无下限右上
+            if bondPoints[.bottom]?.point == nil {
+                limitTopRightToRight(&outPoint)
+            }
+        }
+        
+        point = outPoint
+        
+        return
     }
     
 }
@@ -497,78 +472,3 @@ struct EPMSideColor {
     }
 }
 
-
-class EPMView: UIView {
-    
-    private var bsdTouches = [EPMTouchView]()
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        backgroundColor = .white
-        
-        setUp()
-        
-    }
-    
-    private func setUp() {
-        
-        let sideColors: [EPMSideColor] = [ .make(nil, nil, .red, .blue),
-                                           .make(.blue, nil, .red, nil),
-                                           .make(nil, .red, .yellow, .red),
-                                           .make(.red, .red, .yellow, nil),
-                                           .make(nil, .yellow, .orange, .yellow),
-                                           .make(.yellow, .yellow, .orange, nil),
-                                           .make(nil, .orange, nil, .orange),
-                                           .make(.orange, .orange, nil, nil) ]
-        
-        let levels: [CGPoint] = [ .make(0, 0), .make(0, 1),
-                                  .make(1, 0), .make(1, 1),
-                                  .make(2, 0), .make(2, 1),
-                                  .make(3, 0), .make(3, 1)]
-        
-        let oriCoordi: [CGPoint] = [ .make(334/2.0, 174/2.0), .make(322/2.0, 682/2.0),
-                                     .make(568/2.0, 168/2.0), .make(692/2.0, 682/2.0),
-                                     .make(850/2.0, 166/2.0), .make(976/2.0, 682/2.0),
-                                     .make(1172/2.0, 162/2.0), .make(1260/2.0, 682/2.0)]
-        
-        var points = [EPMPoint]()
-        
-        let size = CGSize(width: 50, height: 50)
-        
-        for idx in 0..<8 {
-            
-            let ori = oriCoordi[idx]
-            
-            let bsdP = EPMPoint(horizontalLevel: Int(levels[idx].x) , verticalLevel: Int(levels[idx].y), point: oriCoordi[idx], sideColor: sideColors[idx])
-            points.append(bsdP)
-            
-            let bsdTP = EPMTouchView(frame: CGRect(origin: ori, size: size), point: bsdP)
-            
-            bsdTP.panBlock = { (_, viewPoint) in
-                
-                UIView.animate(withDuration: 0.1) {
-                    bsdTP.center = viewPoint
-                }
-                
-                EPMShapeLayerManager.default.updatePoint(EPMPointManager.default.pointFromLevel(bsdP.level)!, view: self)
-            }
-            
-            bsdTP.center = bsdTP.frame.origin
-            
-            addSubview(bsdTP)
-            
-            bsdTouches.append(bsdTP)
-        }
-        
-        EPMPointManager.default.addPoints(points)
-        EPMPointManager.default.setUpAllPoints()
-        
-        EPMShapeLayerManager.default.addPoints(EPMPointManager.default.points, view: self)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-}

@@ -49,6 +49,8 @@ class EPMTouchView: UIView {
             return
         }
         
+        // superview?.bringSubviewToFront(self)
+        
         if sender.state == .began {
             backgroundColor = UIColor.cyan.withAlphaComponent(0.4)
         }

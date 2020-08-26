@@ -13,10 +13,21 @@ public func distanceOf(p1: CGPoint, p2: CGPoint) -> CGFloat {
 
 struct CGLine {
     
+    /// Line type. Line has three forms, the special two is vertical and horizontal, and the normal
+    /// form is diagonal.
     public enum LineType {
-        case normal
+        case diagonal
         case horiz
         case vert
+    }
+    
+    /// There is one point outside the line, we want the near point of the line to this point.
+    /// If the line type is normal, then we will have two near points, one is on vertical direction,
+    /// the other is on horizontal direction. Type `nearest` is the nearest point.
+    public enum NearPointType {
+        case horiz
+        case vert
+        case nearest
     }
     
     public var p1: CGPoint
@@ -34,7 +45,7 @@ struct CGLine {
             
         } else {
             
-            return .normal
+            return .diagonal
         }
     }
 
@@ -92,11 +103,13 @@ struct CGLine {
         point.y - verticalK * point.x
     }
     
-    public func nearpointOf(point: CGPoint) -> CGPoint {
+    public func nearPointOf(point: CGPoint, type: NearPointType = .nearest) -> CGPoint {
         
-        if type != .normal {
+        if self.type != .diagonal {
             return pedalOf(point: point)
         }
+        
+        var result: CGPoint
         
         let p1 = CGPoint(x: point.x, y: k * point.x + b)
         let p2 = CGPoint(x: (point.y - b) / k, y: point.y)
@@ -104,18 +117,36 @@ struct CGLine {
         let dis1 = distanceOf(p1: p1, p2: point)
         let dis2 = distanceOf(p1: p2, p2: point)
         
-        if dis1 < dis2 {
-            return p1
+        switch type {
+        case .nearest:
+            if dis1 < dis2 {
+                
+                result = p1
+            }
+            
+            result = p2
+            
+        case .horiz:
+           
+            result = p2
+            
+        case .vert:
+           
+            result = p1
+            
         }
         
-        return p2
+        debugPrint("进点\(point) 近点\(result)")
+        
+        return result
+        
     }
     
     public func pedalOf(point: CGPoint) -> CGPoint {
         
         switch type {
         
-        case .normal:
+        case .diagonal:
             
             let k1 = k
             let b1 = b

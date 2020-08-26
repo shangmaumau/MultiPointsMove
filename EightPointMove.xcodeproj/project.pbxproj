@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -17,6 +17,8 @@
 		E269494324B407DB001548DB /* EightPointMoveTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E269494224B407DB001548DB /* EightPointMoveTests.swift */; };
 		E269494E24B407DB001548DB /* EightPointMoveUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E269494D24B407DB001548DB /* EightPointMoveUITests.swift */; };
 		E269495C24B45DE0001548DB /* Point.swift in Sources */ = {isa = PBXBuildFile; fileRef = E269495B24B45DE0001548DB /* Point.swift */; };
+		E2A738A524F654EF005438A7 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = E2A738A424F654EF005438A7 /* SnapKit */; };
+		E2A738A724F65511005438A7 /* ShowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2A738A624F65511005438A7 /* ShowView.swift */; };
 		E2AD141C24F5F23800FAAC63 /* UIKitExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2AD141B24F5F23800FAAC63 /* UIKitExtensions.swift */; };
 		E2AD141E24F5F25A00FAAC63 /* CGLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2AD141D24F5F25A00FAAC63 /* CGLine.swift */; };
 		E2AD142024F5F2A800FAAC63 /* PointManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2AD141F24F5F2A800FAAC63 /* PointManager.swift */; };
@@ -58,6 +60,7 @@
 		E269494D24B407DB001548DB /* EightPointMoveUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EightPointMoveUITests.swift; sourceTree = "<group>"; };
 		E269494F24B407DB001548DB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E269495B24B45DE0001548DB /* Point.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Point.swift; sourceTree = "<group>"; };
+		E2A738A624F65511005438A7 /* ShowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowView.swift; sourceTree = "<group>"; };
 		E2AD141B24F5F23800FAAC63 /* UIKitExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitExtensions.swift; sourceTree = "<group>"; };
 		E2AD141D24F5F25A00FAAC63 /* CGLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGLine.swift; sourceTree = "<group>"; };
 		E2AD141F24F5F2A800FAAC63 /* PointManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointManager.swift; sourceTree = "<group>"; };
@@ -70,6 +73,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E2A738A524F654EF005438A7 /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -153,6 +157,7 @@
 				E2AD142124F5F2ED00FAAC63 /* ShapeLayer.swift */,
 				E254ED0224B6AF750031281F /* CGExtensions.swift */,
 				E2AD141B24F5F23800FAAC63 /* UIKitExtensions.swift */,
+				E2A738A624F65511005438A7 /* ShowView.swift */,
 			);
 			path = "TOUCH VIEW";
 			sourceTree = "<group>";
@@ -173,6 +178,9 @@
 			dependencies = (
 			);
 			name = EightPointMove;
+			packageProductDependencies = (
+				E2A738A424F654EF005438A7 /* SnapKit */,
+			);
 			productName = EightPointMove;
 			productReference = E269492824B407D9001548DB /* EightPointMove.app */;
 			productType = "com.apple.product-type.application";
@@ -244,6 +252,9 @@
 				Base,
 			);
 			mainGroup = E269491F24B407D9001548DB;
+			packageReferences = (
+				E2A738A324F654EF005438A7 /* XCRemoteSwiftPackageReference "SnapKit" */,
+			);
 			productRefGroup = E269492924B407D9001548DB /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -287,6 +298,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E2A738A724F65511005438A7 /* ShowView.swift in Sources */,
 				E269495C24B45DE0001548DB /* Point.swift in Sources */,
 				E254ED0324B6AF750031281F /* CGExtensions.swift in Sources */,
 				E2AD142024F5F2A800FAAC63 /* PointManager.swift in Sources */,
@@ -629,6 +641,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		E2A738A324F654EF005438A7 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		E2A738A424F654EF005438A7 /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E2A738A324F654EF005438A7 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = E269492024B407D9001548DB /* Project object */;
 }

@@ -23,6 +23,7 @@ extension CGPoint {
     }
 
 }
+
 extension CGPoint: Comparable {
     
     public static func < (lhs: Self, rhs: Self) -> Bool {
@@ -134,4 +135,34 @@ extension CGRect {
     public static func new(y: CGFloat, _ inRect: CGRect) -> CGRect {
         CGRect(x: inRect.minX, y: y, width: inRect.width, height: inRect.height)
     }
+}
+
+public func optionalMax<T: Comparable>(_ f1: T?...) -> T? {
+    
+    var ts = [T]()
+    
+    for xiaoT in f1 {
+        if let reT = xiaoT {
+            ts.append(reT)
+        }
+    }
+    
+    ts.sort()
+    
+    return ts.last
+}
+
+public func optionalMin<T: Comparable>(_ f1: T?...) -> T? {
+    
+    var ts = [T]()
+    
+    for xiaoT in f1 {
+        if let reT = xiaoT {
+            ts.append(reT)
+        }
+    }
+    
+    ts.sort()
+    
+    return ts.first
 }
