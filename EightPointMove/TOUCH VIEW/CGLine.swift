@@ -136,8 +136,6 @@ struct CGLine {
             
         }
         
-        debugPrint("进点\(point) 近点\(result)")
-        
         return result
         
     }

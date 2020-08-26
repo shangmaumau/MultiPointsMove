@@ -60,10 +60,10 @@ class EPMTouchView: UIView {
         
         if sender.state == .changed {
             
-            point.point = sender.location(in: self.superview)
+            point.point = sender.location(in: superview)
             
             let direction = sender.direction
-            debugPrint("pan direction \(direction)")
+            debugPrint("PanGesture direction: \(direction)")
             
             if let limitPoint = EPMPointManager.default.limitPoint(point, direction) {
                 // 更新 touch 的 point
