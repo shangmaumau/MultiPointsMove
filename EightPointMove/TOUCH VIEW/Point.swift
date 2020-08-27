@@ -402,7 +402,6 @@ struct EPMPoint {
         
         point = outPoint
         
-        return
     }
     
 }
