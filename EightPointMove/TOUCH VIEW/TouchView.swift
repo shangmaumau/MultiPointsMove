@@ -61,10 +61,7 @@ class EPMTouchView: UIView {
             
             point.point = sender.location(in: superview)
             
-            let direction = sender.direction
-            debugPrint("PanGesture direction: \(direction)")
-            
-            if let limitPoint = EPMPointManager.default.limitPoint(point, direction) {
+            if let limitPoint = EPMPointManager.default.limitPoint(point) {
                 // 更新 touch 的 point
                 self.point = limitPoint
                 panBlock?(sender.state, limitPoint.point)

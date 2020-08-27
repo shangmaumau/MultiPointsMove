@@ -81,10 +81,10 @@ class EPMPointManager: NSObject {
     
     // MARK:- Limit point.
     
-    public func limitPoint(_ newPoint: EPMPoint, _ direction: GestureDirection) -> EPMPoint? {
+    public func limitPoint(_ newPoint: EPMPoint) -> EPMPoint? {
         
         if var nP = pointFromLevel(newPoint.level) {
-            nP.limitPoint(newPoint.point, direction)
+            nP.limitPoint(newPoint.point)
             updatePoint(nP)
             return pointFromLevel(nP.level)
         }

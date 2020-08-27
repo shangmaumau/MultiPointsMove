@@ -164,7 +164,7 @@ struct EPMPoint {
     /// - Parameter newPoint: The point will move to.
     /// - Returns: The limited point that can move to.
     @discardableResult
-    public mutating func limitPoint(_ newPoint: CGPoint, _ direction: GestureDirection) -> CGPoint {
+    public mutating func limitPoint(_ newPoint: CGPoint) -> CGPoint {
         guard newPoint != self.point else {
             return self.point
         }
@@ -172,14 +172,14 @@ struct EPMPoint {
         var outPoint = newPoint
         
         // best solution
-        limit(direction: direction, of: &outPoint)
+        limit(of: &outPoint)
 
         self.point = outPoint
         
         return outPoint
     }
 
-    private func limit(direction direc: GestureDirection, of point: inout CGPoint) {
+    private func limit(of point: inout CGPoint) {
 
         let margin: CGFloat = 10.0
 
