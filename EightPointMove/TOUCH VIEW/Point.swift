@@ -171,7 +171,7 @@ struct EPMPoint {
         
         var outPoint = newPoint
         
-        // best solution
+        // better solution
         limit(of: &outPoint)
 
         self.point = outPoint
@@ -299,7 +299,6 @@ struct EPMPoint {
 
             var near: CGPoint?
 
-            // 左下线的限制点
             if let bottomLeft = bondPoints[.bottomLeft]?.point,
                let left = bondPoints[.left]?.point,
                let line = CGLine(p1: bottomLeft, p2: left) {
