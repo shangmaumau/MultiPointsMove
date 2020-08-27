@@ -185,10 +185,11 @@ struct EPMPoint {
 
         var outPoint = point
 
-        // 顶边：左
+        // Top side: left
         func limitTopLeftToTop(_ p: inout CGPoint) {
 
             var near: CGPoint?
+            
             if let topLeft = bondPoints[.topLeft]?.point,
                let top = bondPoints[.top]?.point,
                let line = CGLine(p1: topLeft, p2: top) {
@@ -202,7 +203,7 @@ struct EPMPoint {
             }
         }
 
-        // 顶边：右
+        // Top side: right
         func limitTopToTopRight(_ p: inout CGPoint) {
 
             var near: CGPoint?
@@ -220,7 +221,7 @@ struct EPMPoint {
             }
         }
 
-        // 右边：上
+        // Right side: up
         func limitTopRightToRight(_ p: inout CGPoint) {
 
             var near: CGPoint?
@@ -239,10 +240,11 @@ struct EPMPoint {
 
         }
 
-        // 右边：下
+        // Right side: down
         func limitRightToBottomRight(_ p: inout CGPoint) {
 
             var near: CGPoint?
+            
             if let right = bondPoints[.right]?.point,
                let bottomright = bondPoints[.bottomRight]?.point,
                let line = CGLine(p1: bottomright, p2: right) {
@@ -256,7 +258,7 @@ struct EPMPoint {
             }
         }
 
-        // 底边：右
+        // Bottom side: right
         func limitBottomRightToBottom(_ p: inout CGPoint) {
 
             var near: CGPoint?
@@ -274,7 +276,7 @@ struct EPMPoint {
             }
         }
 
-        // 底边：左
+        // Bottom: left
         func limitBottomToBottomLeft(_ p: inout CGPoint) {
 
             var near: CGPoint?
@@ -292,7 +294,7 @@ struct EPMPoint {
             }
         }
 
-        // 左边：下
+        // Left side: down
         func limitBottomLeftToLeft(_ p: inout CGPoint) {
 
             var near: CGPoint?
@@ -303,6 +305,7 @@ struct EPMPoint {
                let line = CGLine(p1: bottomLeft, p2: left) {
 
                 near = line.nearPointOf(point: p, type: .horiz)
+                
             }
 
             if let near = near, p.x <= near.x {
@@ -310,16 +313,17 @@ struct EPMPoint {
             }
         }
 
-        // 左边：上
+        // Left side: up
         func limitLeftToTopLeft(_ p: inout CGPoint) {
+            
             var near: CGPoint?
 
-            // 左上线的限制点
             if let left = bondPoints[.left]?.point,
                let topleft = bondPoints[.topLeft]?.point,
                let line = CGLine(p1: left, p2: topleft) {
 
                 near = line.nearPointOf(point: point, type: .horiz)
+                
             }
 
             if let near = near, p.x <= near.x {
@@ -352,12 +356,10 @@ struct EPMPoint {
                 limitBottomLeftToLeft(&outPoint)
             }
             
-            // 有左无上限左下
             if bondPoints[.top]?.point == nil {
                 limitBottomLeftToLeft(&outPoint)
             }
             
-            // 有左无下限左上
             if bondPoints[.bottom]?.point == nil {
                 limitLeftToTopLeft(&outPoint)
             }
