@@ -65,7 +65,7 @@ class EPMPointManager: NSObject {
     /// Update point.
     /// - Note: Call this after all the points were added.
     /// - Parameter point: In point.
-    private func updatePoint(_ point: EPMPoint) {
+    public func updatePoint(_ point: EPMPoint) {
         
         guard let idx = points.firstIndex(of: point) else {
             return
@@ -83,10 +83,10 @@ class EPMPointManager: NSObject {
     
     public func limitPoint(_ newPoint: EPMPoint) -> EPMPoint? {
         
-        if var nP = pointFromLevel(newPoint.level) {
+        if var nP = point(ofLevel: newPoint.level) {
             nP.limitPoint(newPoint.point)
             updatePoint(nP)
-            return pointFromLevel(nP.level)
+            return point(ofLevel: nP.level)
         }
         
         return nil
@@ -94,10 +94,10 @@ class EPMPointManager: NSObject {
     
     // MARK:- Methods
     
-    /// Fetch the element by its `level`.
-    /// - Parameter level: Element's level.
-    /// - Returns: The point.
-    public func pointFromLevel(_ level: CGPoint) -> EPMPoint? {
+    /// Fetch an element by a `level`.
+    /// - Parameter level: In level.
+    /// - Returns: Out point.
+    public func point(ofLevel level: CGPoint) -> EPMPoint? {
         
         for point in points {
             if point.level == level {
@@ -105,6 +105,23 @@ class EPMPointManager: NSObject {
             }
         }
         return nil
+    }
+    
+    /// Fetch elements by levels.
+    /// - Parameter lvls: In levels.
+    /// - Returns: Out points.
+    public func points(ofLevels lvls: [CGPoint]) -> [EPMPoint] {
+        
+        var points = [EPMPoint]()
+        
+        for l in lvls {
+            
+            if let point = point(ofLevel: l) {
+                points.append(point)
+            }
+        }
+        
+        return points
     }
     
 }

@@ -7,10 +7,14 @@
 
 import UIKit
 
-class EPMTouchView: UIView {
+class EPMBaseTouchView: UIView {
     
     public var point: EPMPoint = EPMPoint.zero
-    public var panBlock: ((UIGestureRecognizer.State, CGPoint) -> Void)?
+    private var panBlock: ((UIGestureRecognizer.State, CGPoint) -> Void)?
+    
+    public func setPanBlock(_ block: @escaping (UIGestureRecognizer.State, CGPoint) -> Void) {
+        panBlock = block
+    }
     
     public init(frame: CGRect, point: EPMPoint) {
         super.init(frame: frame)
@@ -19,8 +23,7 @@ class EPMTouchView: UIView {
         addPanGesture()
         
         backgroundColor = UIColor.black.withAlphaComponent(0.4)
-        layer.cornerRadius = frame.width/2.0
-        layer.masksToBounds = true
+        
     }
     
     required init?(coder: NSCoder) {
@@ -44,17 +47,10 @@ class EPMTouchView: UIView {
         panBlock?(sender.state, sender.location(in: self))
     }
     
-    @objc private func panEvent(_ sender: UIPanGestureRecognizer) {
+    @objc public func panEvent(_ sender: UIPanGestureRecognizer) {
         
         guard sender.view != nil else {
             return
-        }
-        
-        if sender.state == .began {
-            backgroundColor = UIColor.cyan.withAlphaComponent(0.4)
-        }
-        if sender.state == .ended || sender.state == .cancelled {
-            backgroundColor = UIColor.black.withAlphaComponent(0.4)
         }
         
         if sender.state == .changed {
@@ -67,6 +63,65 @@ class EPMTouchView: UIView {
                 panBlock?(sender.state, limitPoint.point)
             }
             
+        }
+    }
+    
+}
+
+class EPMTouchViewRound: EPMBaseTouchView {
+    
+    public override init(frame: CGRect, point: EPMPoint) {
+        super.init(frame: frame, point: point)
+        
+        layer.cornerRadius = frame.width/2.0
+        layer.masksToBounds = true
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func panEvent(_ sender: UIPanGestureRecognizer) {
+        
+        if sender.state == .began {
+            backgroundColor = UIColor.cyan.withAlphaComponent(0.4)
+        }
+        if sender.state == .ended || sender.state == .cancelled {
+            backgroundColor = UIColor.black.withAlphaComponent(0.4)
+        }
+        
+        super.panEvent(sender)
+        
+    }
+    
+}
+
+class EPMTouchViewLine: EPMBaseTouchView {
+    
+    public override init(frame: CGRect, point: EPMPoint) {
+        super.init(frame: frame, point: point)
+        
+        layer.cornerRadius = 5.0
+        layer.masksToBounds = true
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func panEvent(_ sender: UIPanGestureRecognizer) {
+        
+        if sender.state == .began {
+            backgroundColor = UIColor.cyan.withAlphaComponent(0.4)
+        }
+        if sender.state == .ended || sender.state == .cancelled {
+            backgroundColor = UIColor.black.withAlphaComponent(0.4)
+        }
+        
+        // 手势应该是垂直方向
+        if sender.direction.isVertical {
+            
+            super.panEvent(sender)
         }
     }
     

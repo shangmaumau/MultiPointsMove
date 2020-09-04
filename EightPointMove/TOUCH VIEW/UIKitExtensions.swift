@@ -10,7 +10,7 @@ import UIKit
 public enum GestureDirection: Int {
     case up, down, left, right, none
     public var isVertical: Bool { return [.up, .down].contains(self) }
-    public var isHorizontal: Bool { return !isVertical }
+    public var isHorizontal: Bool { return [.left, .right].contains(self) }
 }
 
 public extension UIPanGestureRecognizer {
