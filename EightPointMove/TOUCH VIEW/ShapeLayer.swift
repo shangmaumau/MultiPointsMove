@@ -24,10 +24,6 @@ class EPMShapeLayer: CAShapeLayer {
 
 class EPMShapeLayerManager: NSObject {
     
-    public static let `default`: EPMShapeLayerManager = {
-        return EPMShapeLayerManager()
-    }()
-    
     private static func identifierFrom(p1: CGPoint, p2: CGPoint) -> String {
         var ps = [ p1, p2 ]
         ps.sort()

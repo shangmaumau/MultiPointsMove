@@ -12,6 +12,8 @@ class ViewController: UIViewController {
     
     var bsdClbrView: EPMView!
     
+    var inputView_c: InputView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -20,6 +22,16 @@ class ViewController: UIViewController {
         bsdClbrView = EPMView(frame: view.frame)
         
         view.addSubview(bsdClbrView)
+        
+        inputView_c = InputView(frame: .zero)
+        
+        view.addSubview(inputView_c)
+        inputView_c.snp.makeConstraints { (make) in
+            
+            make.width.equalToSuperview().multipliedBy(0.5)
+            make.top.right.bottom.equalToSuperview()
+            
+        }
         
         
     }

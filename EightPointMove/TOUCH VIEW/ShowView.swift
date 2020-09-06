@@ -14,6 +14,10 @@ class EPMView: UIView {
     
     var touchLine: EPMTouchViewLine!
     
+    public var pointManager = EPMPointManager()
+    public var layerManager = EPMShapeLayerManager()
+    
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -62,13 +66,20 @@ class EPMView: UIView {
             
             let bsdTP = EPMTouchViewRound(frame: CGRect(origin: ori, size: size), point: bsdP)
             
-//            bsdTP.setPanBlock { (_, viewPoint) in
+//            bsdTP.setPanBlock { [weak self] (_, viewPoint) in
+//
+//                guard let self = self else {
+//                    return
+//                }
 //
 //                UIView.animate(withDuration: 0.1) {
 //                    bsdTP.center = viewPoint
 //                }
 //
-//                EPMShapeLayerManager.default.updatePoint(EPMPointManager.default.point(ofLevel: bsdP.level)!, view: self)
+//                if let p = self.pointManager.point(ofLevel: bsdP.level) {
+//                    self.layerManager.updatePoint(p, view: self)
+//                }
+//
 //            }
             
             bsdTP.center = bsdTP.frame.origin
@@ -78,24 +89,25 @@ class EPMView: UIView {
             bsdTouches[levels[idx]] = bsdTP
         }
         
-        EPMPointManager.default.addPoints(points)
-        EPMPointManager.default.setUpAllPoints()
+        pointManager.addPoints(points)
+        pointManager.setUpAllPoints()
         
-        EPMShapeLayerManager.default.addPoints(EPMPointManager.default.points, view: self)
+        let points_ready = [EPMPoint](pointManager.pointsMap.values)
+        layerManager.addPoints( points_ready , view: self)
         
         addTouchLine()
     }
     
     func addTouchLine() {
         
-        if var p00 = EPMPointManager.default.point(ofLevel: .make(0, 0)),
-           let p01 = EPMPointManager.default.point(ofLevel: .make(0, 1)),
-           var p10 = EPMPointManager.default.point(ofLevel: .make(1, 0)),
-           let p11 = EPMPointManager.default.point(ofLevel: .make(1, 1)),
-           var p20 = EPMPointManager.default.point(ofLevel: .make(2, 0)),
-           let p21 = EPMPointManager.default.point(ofLevel: .make(2, 1)),
-           var p30 = EPMPointManager.default.point(ofLevel: .make(3, 0)),
-           let p31 = EPMPointManager.default.point(ofLevel: .make(3, 1)) {
+        if var p00 = pointManager.point(ofLevel: .make(0, 0)),
+           let p01 = pointManager.point(ofLevel: .make(0, 1)),
+           var p10 = pointManager.point(ofLevel: .make(1, 0)),
+           let p11 = pointManager.point(ofLevel: .make(1, 1)),
+           var p20 = pointManager.point(ofLevel: .make(2, 0)),
+           let p21 = pointManager.point(ofLevel: .make(2, 1)),
+           var p30 = pointManager.point(ofLevel: .make(3, 0)),
+           let p31 = pointManager.point(ofLevel: .make(3, 1)) {
             
             let lheight: CGFloat = 30.0
             let lineRect = CGRect.make(p00.point.x, p00.point.y - lheight / 2.0, p30.point.x - p00.point.x, lheight)
@@ -124,17 +136,17 @@ class EPMView: UIView {
                     p20.point = ptoline2
                     p30.point = ptoline3
                     
-                    EPMPointManager.default.updatePoint(p00)
-                    EPMPointManager.default.updatePoint(p10)
-                    EPMPointManager.default.updatePoint(p20)
-                    EPMPointManager.default.updatePoint(p30)
+                    self.pointManager.updatePoint(p00)
+                    self.pointManager.updatePoint(p10)
+                    self.pointManager.updatePoint(p20)
+                    self.pointManager.updatePoint(p30)
                     
-                    EPMPointManager.default.setUpAllPoints()
+                    self.pointManager.setUpAllPoints()
                     
-                    EPMShapeLayerManager.default.updatePoint(EPMPointManager.default.point(ofLevel: .make(0, 0))!, view: self)
-                    EPMShapeLayerManager.default.updatePoint(EPMPointManager.default.point(ofLevel: .make(1, 0))!, view: self)
-                    EPMShapeLayerManager.default.updatePoint(EPMPointManager.default.point(ofLevel: .make(2, 0))!, view: self)
-                    EPMShapeLayerManager.default.updatePoint(EPMPointManager.default.point(ofLevel: .make(3, 0))!, view: self)
+                    self.layerManager.updatePoint(self.pointManager.point(ofLevel: .make(0, 0))!, view: self)
+                    self.layerManager.updatePoint(self.pointManager.point(ofLevel: .make(1, 0))!, view: self)
+                    self.layerManager.updatePoint(self.pointManager.point(ofLevel: .make(2, 0))!, view: self)
+                    self.layerManager.updatePoint(self.pointManager.point(ofLevel: .make(3, 0))!, view: self)
                     
                     let newwidth = abs(ptoline3.x - p00.point.x)
                     
