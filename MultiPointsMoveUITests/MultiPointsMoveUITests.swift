@@ -1,13 +1,13 @@
 //
-//  EightPointMoveUITests.swift
-//  EightPointMoveUITests
+//  MultiPointsMoveUITests.swift
+//  MultiPointsMoveUITests
 //
 //  Created by 尚雷勋 on 2020/7/7.
 //
 
 import XCTest
 
-class EightPointMoveUITests: XCTestCase {
+class MultiPointsMoveUITests: XCTestCase {
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.

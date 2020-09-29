@@ -1,6 +1,6 @@
 //
 //  ViewController.swift
-//  EightPointMove
+//  MultiPointsMove
 //
 //  Created by 尚雷勋 on 2020/7/7.
 //

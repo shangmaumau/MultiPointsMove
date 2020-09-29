@@ -33,14 +33,14 @@
 			containerPortal = E269492024B407D9001548DB /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = E269492724B407D9001548DB;
-			remoteInfo = EightPointMove;
+			remoteInfo = MultiPointsMove;
 		};
 		E269494A24B407DB001548DB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = E269492024B407D9001548DB /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = E269492724B407D9001548DB;
-			remoteInfo = EightPointMove;
+			remoteInfo = MultiPointsMove;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -184,7 +184,7 @@
 			packageProductDependencies = (
 				E2A738A424F654EF005438A7 /* SnapKit */,
 			);
-			productName = EightPointMove;
+			productName = MultiPointsMove;
 			productReference = E269492824B407D9001548DB /* MultiPointsMove.app */;
 			productType = "com.apple.product-type.application";
 		};
@@ -202,7 +202,7 @@
 				E269494024B407DB001548DB /* PBXTargetDependency */,
 			);
 			name = MultiPointsMoveTests;
-			productName = EightPointMoveTests;
+			productName = MultiPointsMoveTests;
 			productReference = E269493E24B407DB001548DB /* MultiPointsMoveTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
@@ -220,7 +220,7 @@
 				E269494B24B407DB001548DB /* PBXTargetDependency */,
 			);
 			name = MultiPointsMoveUITests;
-			productName = EightPointMoveUITests;
+			productName = MultiPointsMoveUITests;
 			productReference = E269494924B407DB001548DB /* MultiPointsMoveUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
@@ -583,7 +583,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = EightPointMove;
+				TEST_TARGET_NAME = MultiPointsMove;
 			};
 			name = Debug;
 		};
@@ -603,7 +603,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = EightPointMove;
+				TEST_TARGET_NAME = MultiPointsMove;
 			};
 			name = Release;
 		};

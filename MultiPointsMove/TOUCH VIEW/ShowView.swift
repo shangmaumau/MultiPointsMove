@@ -1,6 +1,6 @@
 //
 //  ShowView.swift
-//  EightPointMove
+//  MultiPointsMove
 //
 //  Created by 尚雷勋 on 2020/8/26.
 //

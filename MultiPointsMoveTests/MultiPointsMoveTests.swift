@@ -1,6 +1,6 @@
 //
-//  EightPointMoveTests.swift
-//  EightPointMoveTests
+//  MultiPointsMoveTests.swift
+//  MultiPointsMoveTests
 //
 //  Created by 尚雷勋 on 2020/7/7.
 //
@@ -8,7 +8,7 @@
 import XCTest
 @testable import MultiPointsMove
 
-class EightPointMoveTests: XCTestCase {
+class MultiPointsMoveTests: XCTestCase {
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
