@@ -6,7 +6,7 @@
 //
 
 import XCTest
-@testable import EightPointMove
+@testable import MultiPointsMove
 
 class EightPointMoveTests: XCTestCase {
 

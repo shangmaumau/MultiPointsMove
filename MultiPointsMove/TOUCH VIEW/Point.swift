@@ -7,7 +7,7 @@
 
 import UIKit
 
-struct EPMPoint {
+struct MPMPoint {
     
     /// Bond points position.
     public enum BondPointPosition: String {
@@ -82,12 +82,12 @@ struct EPMPoint {
     ///
     /// By the updating time, all values were updated one by one, cause `BSDPoint` is value type,
     /// so the former update one can't know the latter updated one's all properties.
-    public var bondPoints = [BondPointPosition : EPMPoint]()
+    public var bondPoints = [BondPointPosition : MPMPoint]()
     
     /// Real bonded points.
-    public var bondPointsR: [EPMPoint] {
+    public var bondPointsR: [MPMPoint] {
         
-        var bsds = [EPMPoint]()
+        var bsds = [MPMPoint]()
         if let top = bondPoints[.top] {
             bsds.append(top)
         }
@@ -108,8 +108,8 @@ struct EPMPoint {
         [ .top: sideColor.top, .left: sideColor.left, .right: sideColor.right, .bottom: sideColor.bottom]
     }
     
-    public static var zero: EPMPoint {
-        return EPMPoint(level: .zero, point: CGPoint.zero)
+    public static var zero: MPMPoint {
+        return MPMPoint(level: .zero, point: CGPoint.zero)
     }
     
     /// Add bonded points.
@@ -117,7 +117,7 @@ struct EPMPoint {
     /// Will filter, if has no relation, won't add in.
     ///
     /// - Parameter points: In points.
-    public mutating func add(bondPoints points: [EPMPoint]) {
+    public mutating func add(bondPoints points: [MPMPoint]) {
         for p_ in points {
             add(bondPoint: p_)
         }
@@ -128,7 +128,7 @@ struct EPMPoint {
     /// Will filter, if has no relation, won't add in.
     /// - Parameters:
     ///   - point: In point.
-    public mutating func add(bondPoint point: EPMPoint) {
+    public mutating func add(bondPoint point: MPMPoint) {
         
         guard position(ofPoint: point) != .none else {
             return
@@ -140,7 +140,7 @@ struct EPMPoint {
     
     /// Update boned point.
     /// - Parameter point: The bonded point.
-    public mutating func update(bondPoint point: EPMPoint) {
+    public mutating func update(bondPoint point: MPMPoint) {
         
         guard position(ofPoint: point) != .none else {
             return
@@ -152,7 +152,7 @@ struct EPMPoint {
     /// Infer the position relation by in point's level.
     /// - Parameter point: In point.
     /// - Returns: The position relation between `self`.
-    public func position(ofPoint point: EPMPoint) -> BondPointPosition {
+    public func position(ofPoint point: MPMPoint) -> BondPointPosition {
         
         let inLevel = point.level
         let meLevel = self.level
@@ -259,8 +259,6 @@ struct EPMPoint {
             }
             
         }
-        
-        
     }
 
     private func limit(of point: inout CGPoint) {
@@ -489,7 +487,7 @@ struct EPMPoint {
     
 }
 
-extension EPMPoint: Equatable {
+extension MPMPoint: Equatable {
     
     public static func == (lhs: Self, rhs: Self) -> Bool {
         if lhs.level == rhs.level {

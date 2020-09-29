@@ -9,14 +9,14 @@ import UIKit
 
 class EPMBaseTouchView: UIView {
     
-    public var point: EPMPoint = EPMPoint.zero
+    public var point: MPMPoint = MPMPoint.zero
     private var panBlock: ((UIGestureRecognizer.State, CGPoint) -> Void)?
     
     public func setPanBlock(_ block: @escaping (UIGestureRecognizer.State, CGPoint) -> Void) {
         panBlock = block
     }
     
-    public init(frame: CGRect, point: EPMPoint) {
+    public init(frame: CGRect, point: MPMPoint) {
         super.init(frame: frame)
         self.point = point
         // addLongPressGesture()
@@ -71,7 +71,7 @@ class EPMBaseTouchView: UIView {
 
 class EPMTouchViewRound: EPMBaseTouchView {
     
-    public override init(frame: CGRect, point: EPMPoint) {
+    public override init(frame: CGRect, point: MPMPoint) {
         super.init(frame: frame, point: point)
         
         layer.cornerRadius = frame.width/2.0
@@ -99,7 +99,7 @@ class EPMTouchViewRound: EPMBaseTouchView {
 
 class EPMTouchViewLine: EPMBaseTouchView {
     
-    public override init(frame: CGRect, point: EPMPoint) {
+    public override init(frame: CGRect, point: MPMPoint) {
         super.init(frame: frame, point: point)
         
         layer.cornerRadius = 5.0

@@ -34,18 +34,18 @@ class EPMLayerManager: NSObject {
         return identi
     }
     
-    public func addPoints(_ points: [EPMPoint], view: UIView) {
+    public func addPoints(_ points: [MPMPoint], view: UIView) {
         for p_ in points {
             addLayersFrom(point: p_, view: view)
         }
     }
     
-    public func updatePoint(_ point: EPMPoint, view: UIView) {
+    public func updatePoint(_ point: MPMPoint, view: UIView) {
         removeLayersFrom(point: point, view: view)
         addLayersFrom(point: point, view: view)
     }
     
-    private func removeLayersFrom(point: EPMPoint, view: UIView) {
+    private func removeLayersFrom(point: MPMPoint, view: UIView) {
         
         var ids = [String]()
         for pp in point.bondPointsR {
@@ -63,7 +63,7 @@ class EPMLayerManager: NSObject {
         }
     }
     
-    private func addLayersFrom(point: EPMPoint, view: UIView) {
+    private func addLayersFrom(point: MPMPoint, view: UIView) {
         
         var ids = [String]()
         for pp in point.bondPointsR {
@@ -89,7 +89,7 @@ class EPMLayerManager: NSObject {
         
     }
     
-    private func addLineLayer(p0: EPMPoint, p1: EPMPoint, view: UIView) {
+    private func addLineLayer(p0: MPMPoint, p1: MPMPoint, view: UIView) {
         
         let linePath = UIBezierPath()
         linePath.move(to: p0.point)

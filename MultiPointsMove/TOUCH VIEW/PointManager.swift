@@ -7,15 +7,15 @@
 
 import UIKit
 
-class EPMPointManager: NSObject {
+class MPMPointManager: NSObject {
     
-    public private(set) var pointsMap = [CGPoint : EPMPoint]()
+    public private(set) var pointsMap = [CGPoint : MPMPoint]()
     
     // MARK:- Add point
     
     /// Add points.
     /// - Parameter points: In points.
-    public func add(points pts: [EPMPoint]) {
+    public func add(points pts: [MPMPoint]) {
         for p_ in pts {
             add(point: p_)
         }
@@ -25,7 +25,7 @@ class EPMPointManager: NSObject {
     ///
     /// If `points` contains this point, won't add in.
     /// - Parameter point: In point.
-    public func add(point pt: EPMPoint) {
+    public func add(point pt: MPMPoint) {
         
         guard pointsMap[pt.level] == nil else {
             return
@@ -39,7 +39,7 @@ class EPMPointManager: NSObject {
     /// Set up all points.
     public func setUpAllPoints() {
         
-        let values = [EPMPoint](pointsMap.values)
+        let values = [MPMPoint](pointsMap.values)
         for var val in values {
             val.add(bondPoints: values)
             pointsMap[val.level] = val
@@ -48,7 +48,7 @@ class EPMPointManager: NSObject {
     
     /// Remove point.
     /// - Parameter point: In point.
-    public func remove(point aPoint: EPMPoint) {
+    public func remove(point aPoint: MPMPoint) {
         
         guard pointsMap[aPoint.level] != nil else {
             return
@@ -66,7 +66,7 @@ class EPMPointManager: NSObject {
     /// Update point.
     /// - Note: Call this after all the points were added.
     /// - Parameter point: In point.
-    public func update(point aPoint: EPMPoint) {
+    public func update(point aPoint: MPMPoint) {
         
         guard pointsMap[aPoint.level] != nil else {
             return
@@ -74,7 +74,7 @@ class EPMPointManager: NSObject {
         
         pointsMap[aPoint.level] = aPoint
         
-        let values = [EPMPoint](pointsMap.values)
+        let values = [MPMPoint](pointsMap.values)
 
         for var val in values {
             val.update(bondPoint: aPoint)
@@ -85,7 +85,7 @@ class EPMPointManager: NSObject {
     
     // MARK:- Limit point.
     
-    public func limit(point aPoint: EPMPoint) -> EPMPoint? {
+    public func limit(point aPoint: MPMPoint) -> MPMPoint? {
         
         if var nP = point(ofLevel: aPoint.level) {
             nP.limit(point: aPoint.point)
@@ -101,16 +101,16 @@ class EPMPointManager: NSObject {
     /// Fetch an element by a `level`.
     /// - Parameter level: In level.
     /// - Returns: Out point.
-    public func point(ofLevel level: CGPoint) -> EPMPoint? {
+    public func point(ofLevel level: CGPoint) -> MPMPoint? {
         pointsMap[level]
     }
     
     /// Fetch elements by levels.
     /// - Parameter lvls: In levels.
     /// - Returns: Out points.
-    public func points(ofLevels lvls: [CGPoint]) -> [EPMPoint] {
+    public func points(ofLevels lvls: [CGPoint]) -> [MPMPoint] {
         
-        var points = [EPMPoint]()
+        var points = [MPMPoint]()
         
         for l in lvls {
             

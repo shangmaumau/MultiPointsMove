@@ -14,8 +14,8 @@
 		E269493324B407D9001548DB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E269493124B407D9001548DB /* Main.storyboard */; };
 		E269493524B407DB001548DB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E269493424B407DB001548DB /* Assets.xcassets */; };
 		E269493824B407DB001548DB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E269493624B407DB001548DB /* LaunchScreen.storyboard */; };
-		E269494324B407DB001548DB /* EightPointMoveTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E269494224B407DB001548DB /* EightPointMoveTests.swift */; };
-		E269494E24B407DB001548DB /* EightPointMoveUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E269494D24B407DB001548DB /* EightPointMoveUITests.swift */; };
+		E269494324B407DB001548DB /* MultiPointsMoveTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E269494224B407DB001548DB /* MultiPointsMoveTests.swift */; };
+		E269494E24B407DB001548DB /* MultiPointsMoveUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E269494D24B407DB001548DB /* MultiPointsMoveUITests.swift */; };
 		E269495C24B45DE0001548DB /* Point.swift in Sources */ = {isa = PBXBuildFile; fileRef = E269495B24B45DE0001548DB /* Point.swift */; };
 		E290ED8825047DE9009D183E /* InputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E290ED8725047DE9009D183E /* InputView.swift */; };
 		E2A738A524F654EF005438A7 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = E2A738A424F654EF005438A7 /* SnapKit */; };
@@ -46,7 +46,7 @@
 
 /* Begin PBXFileReference section */
 		E254ED0224B6AF750031281F /* CGExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGExtensions.swift; sourceTree = "<group>"; };
-		E269492824B407D9001548DB /* EightPointMove.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EightPointMove.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E269492824B407D9001548DB /* MultiPointsMove.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MultiPointsMove.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E269492B24B407D9001548DB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E269492D24B407D9001548DB /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		E269492F24B407D9001548DB /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -54,11 +54,11 @@
 		E269493424B407DB001548DB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E269493724B407DB001548DB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E269493924B407DB001548DB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		E269493E24B407DB001548DB /* EightPointMoveTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EightPointMoveTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		E269494224B407DB001548DB /* EightPointMoveTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EightPointMoveTests.swift; sourceTree = "<group>"; };
+		E269493E24B407DB001548DB /* MultiPointsMoveTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MultiPointsMoveTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E269494224B407DB001548DB /* MultiPointsMoveTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiPointsMoveTests.swift; sourceTree = "<group>"; };
 		E269494424B407DB001548DB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		E269494924B407DB001548DB /* EightPointMoveUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EightPointMoveUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		E269494D24B407DB001548DB /* EightPointMoveUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EightPointMoveUITests.swift; sourceTree = "<group>"; };
+		E269494924B407DB001548DB /* MultiPointsMoveUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MultiPointsMoveUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E269494D24B407DB001548DB /* MultiPointsMoveUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiPointsMoveUITests.swift; sourceTree = "<group>"; };
 		E269494F24B407DB001548DB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E269495B24B45DE0001548DB /* Point.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Point.swift; sourceTree = "<group>"; };
 		E290ED8725047DE9009D183E /* InputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputView.swift; sourceTree = "<group>"; };
@@ -99,9 +99,9 @@
 		E269491F24B407D9001548DB = {
 			isa = PBXGroup;
 			children = (
-				E269492A24B407D9001548DB /* EightPointMove */,
-				E269494124B407DB001548DB /* EightPointMoveTests */,
-				E269494C24B407DB001548DB /* EightPointMoveUITests */,
+				E269492A24B407D9001548DB /* MultiPointsMove */,
+				E269494124B407DB001548DB /* MultiPointsMoveTests */,
+				E269494C24B407DB001548DB /* MultiPointsMoveUITests */,
 				E269492924B407D9001548DB /* Products */,
 			);
 			sourceTree = "<group>";
@@ -109,14 +109,14 @@
 		E269492924B407D9001548DB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				E269492824B407D9001548DB /* EightPointMove.app */,
-				E269493E24B407DB001548DB /* EightPointMoveTests.xctest */,
-				E269494924B407DB001548DB /* EightPointMoveUITests.xctest */,
+				E269492824B407D9001548DB /* MultiPointsMove.app */,
+				E269493E24B407DB001548DB /* MultiPointsMoveTests.xctest */,
+				E269494924B407DB001548DB /* MultiPointsMoveUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		E269492A24B407D9001548DB /* EightPointMove */ = {
+		E269492A24B407D9001548DB /* MultiPointsMove */ = {
 			isa = PBXGroup;
 			children = (
 				E2AD141A24F5F1F100FAAC63 /* TOUCH VIEW */,
@@ -128,25 +128,25 @@
 				E269493624B407DB001548DB /* LaunchScreen.storyboard */,
 				E269493924B407DB001548DB /* Info.plist */,
 			);
-			path = EightPointMove;
+			path = MultiPointsMove;
 			sourceTree = "<group>";
 		};
-		E269494124B407DB001548DB /* EightPointMoveTests */ = {
+		E269494124B407DB001548DB /* MultiPointsMoveTests */ = {
 			isa = PBXGroup;
 			children = (
-				E269494224B407DB001548DB /* EightPointMoveTests.swift */,
+				E269494224B407DB001548DB /* MultiPointsMoveTests.swift */,
 				E269494424B407DB001548DB /* Info.plist */,
 			);
-			path = EightPointMoveTests;
+			path = MultiPointsMoveTests;
 			sourceTree = "<group>";
 		};
-		E269494C24B407DB001548DB /* EightPointMoveUITests */ = {
+		E269494C24B407DB001548DB /* MultiPointsMoveUITests */ = {
 			isa = PBXGroup;
 			children = (
-				E269494D24B407DB001548DB /* EightPointMoveUITests.swift */,
+				E269494D24B407DB001548DB /* MultiPointsMoveUITests.swift */,
 				E269494F24B407DB001548DB /* Info.plist */,
 			);
-			path = EightPointMoveUITests;
+			path = MultiPointsMoveUITests;
 			sourceTree = "<group>";
 		};
 		E2AD141A24F5F1F100FAAC63 /* TOUCH VIEW */ = {
@@ -168,9 +168,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		E269492724B407D9001548DB /* EightPointMove */ = {
+		E269492724B407D9001548DB /* MultiPointsMove */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E269495224B407DB001548DB /* Build configuration list for PBXNativeTarget "EightPointMove" */;
+			buildConfigurationList = E269495224B407DB001548DB /* Build configuration list for PBXNativeTarget "MultiPointsMove" */;
 			buildPhases = (
 				E269492424B407D9001548DB /* Sources */,
 				E269492524B407D9001548DB /* Frameworks */,
@@ -180,17 +180,17 @@
 			);
 			dependencies = (
 			);
-			name = EightPointMove;
+			name = MultiPointsMove;
 			packageProductDependencies = (
 				E2A738A424F654EF005438A7 /* SnapKit */,
 			);
 			productName = EightPointMove;
-			productReference = E269492824B407D9001548DB /* EightPointMove.app */;
+			productReference = E269492824B407D9001548DB /* MultiPointsMove.app */;
 			productType = "com.apple.product-type.application";
 		};
-		E269493D24B407DB001548DB /* EightPointMoveTests */ = {
+		E269493D24B407DB001548DB /* MultiPointsMoveTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E269495524B407DB001548DB /* Build configuration list for PBXNativeTarget "EightPointMoveTests" */;
+			buildConfigurationList = E269495524B407DB001548DB /* Build configuration list for PBXNativeTarget "MultiPointsMoveTests" */;
 			buildPhases = (
 				E269493A24B407DB001548DB /* Sources */,
 				E269493B24B407DB001548DB /* Frameworks */,
@@ -201,14 +201,14 @@
 			dependencies = (
 				E269494024B407DB001548DB /* PBXTargetDependency */,
 			);
-			name = EightPointMoveTests;
+			name = MultiPointsMoveTests;
 			productName = EightPointMoveTests;
-			productReference = E269493E24B407DB001548DB /* EightPointMoveTests.xctest */;
+			productReference = E269493E24B407DB001548DB /* MultiPointsMoveTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		E269494824B407DB001548DB /* EightPointMoveUITests */ = {
+		E269494824B407DB001548DB /* MultiPointsMoveUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E269495824B407DB001548DB /* Build configuration list for PBXNativeTarget "EightPointMoveUITests" */;
+			buildConfigurationList = E269495824B407DB001548DB /* Build configuration list for PBXNativeTarget "MultiPointsMoveUITests" */;
 			buildPhases = (
 				E269494524B407DB001548DB /* Sources */,
 				E269494624B407DB001548DB /* Frameworks */,
@@ -219,9 +219,9 @@
 			dependencies = (
 				E269494B24B407DB001548DB /* PBXTargetDependency */,
 			);
-			name = EightPointMoveUITests;
+			name = MultiPointsMoveUITests;
 			productName = EightPointMoveUITests;
-			productReference = E269494924B407DB001548DB /* EightPointMoveUITests.xctest */;
+			productReference = E269494924B407DB001548DB /* MultiPointsMoveUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -246,7 +246,7 @@
 					};
 				};
 			};
-			buildConfigurationList = E269492324B407D9001548DB /* Build configuration list for PBXProject "EightPointMove" */;
+			buildConfigurationList = E269492324B407D9001548DB /* Build configuration list for PBXProject "MultiPointsMove" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -262,9 +262,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				E269492724B407D9001548DB /* EightPointMove */,
-				E269493D24B407DB001548DB /* EightPointMoveTests */,
-				E269494824B407DB001548DB /* EightPointMoveUITests */,
+				E269492724B407D9001548DB /* MultiPointsMove */,
+				E269493D24B407DB001548DB /* MultiPointsMoveTests */,
+				E269494824B407DB001548DB /* MultiPointsMoveUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -320,7 +320,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E269494324B407DB001548DB /* EightPointMoveTests.swift in Sources */,
+				E269494324B407DB001548DB /* MultiPointsMoveTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -328,7 +328,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E269494E24B407DB001548DB /* EightPointMoveUITests.swift in Sources */,
+				E269494E24B407DB001548DB /* MultiPointsMoveUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -337,12 +337,12 @@
 /* Begin PBXTargetDependency section */
 		E269494024B407DB001548DB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = E269492724B407D9001548DB /* EightPointMove */;
+			target = E269492724B407D9001548DB /* MultiPointsMove */;
 			targetProxy = E269493F24B407DB001548DB /* PBXContainerItemProxy */;
 		};
 		E269494B24B407DB001548DB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = E269492724B407D9001548DB /* EightPointMove */;
+			target = E269492724B407D9001548DB /* MultiPointsMove */;
 			targetProxy = E269494A24B407DB001548DB /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -418,6 +418,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -473,6 +474,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -490,12 +492,12 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = XWWNNK8A4D;
-				INFOPLIST_FILE = EightPointMove/Info.plist;
+				INFOPLIST_FILE = MultiPointsMove/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.tongli.EightPointMove;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tongli.MultiPointsMove;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -509,12 +511,12 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = XWWNNK8A4D;
-				INFOPLIST_FILE = EightPointMove/Info.plist;
+				INFOPLIST_FILE = MultiPointsMove/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.tongli.EightPointMove;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tongli.MultiPointsMove;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -528,18 +530,18 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = XWWNNK8A4D;
-				INFOPLIST_FILE = EightPointMoveTests/Info.plist;
+				INFOPLIST_FILE = MultiPointsMoveTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.tongli.EightPointMoveTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tongli.MultiPointsMoveTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/EightPointMove.app/EightPointMove";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MultiPointsMove.app/MultiPointsMove";
 			};
 			name = Debug;
 		};
@@ -550,18 +552,18 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = XWWNNK8A4D;
-				INFOPLIST_FILE = EightPointMoveTests/Info.plist;
+				INFOPLIST_FILE = MultiPointsMoveTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.tongli.EightPointMoveTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tongli.MultiPointsMoveTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/EightPointMove.app/EightPointMove";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MultiPointsMove.app/MultiPointsMove";
 			};
 			name = Release;
 		};
@@ -571,13 +573,13 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = XWWNNK8A4D;
-				INFOPLIST_FILE = EightPointMoveUITests/Info.plist;
+				INFOPLIST_FILE = MultiPointsMoveUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.tongli.EightPointMoveUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tongli.MultiPointsMoveUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -591,13 +593,13 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = XWWNNK8A4D;
-				INFOPLIST_FILE = EightPointMoveUITests/Info.plist;
+				INFOPLIST_FILE = MultiPointsMoveUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.tongli.EightPointMoveUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tongli.MultiPointsMoveUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -608,7 +610,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		E269492324B407D9001548DB /* Build configuration list for PBXProject "EightPointMove" */ = {
+		E269492324B407D9001548DB /* Build configuration list for PBXProject "MultiPointsMove" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E269495024B407DB001548DB /* Debug */,
@@ -617,7 +619,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		E269495224B407DB001548DB /* Build configuration list for PBXNativeTarget "EightPointMove" */ = {
+		E269495224B407DB001548DB /* Build configuration list for PBXNativeTarget "MultiPointsMove" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E269495324B407DB001548DB /* Debug */,
@@ -626,7 +628,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		E269495524B407DB001548DB /* Build configuration list for PBXNativeTarget "EightPointMoveTests" */ = {
+		E269495524B407DB001548DB /* Build configuration list for PBXNativeTarget "MultiPointsMoveTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E269495624B407DB001548DB /* Debug */,
@@ -635,7 +637,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		E269495824B407DB001548DB /* Build configuration list for PBXNativeTarget "EightPointMoveUITests" */ = {
+		E269495824B407DB001548DB /* Build configuration list for PBXNativeTarget "MultiPointsMoveUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E269495924B407DB001548DB /* Debug */,

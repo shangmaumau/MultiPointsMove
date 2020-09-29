@@ -12,7 +12,7 @@ class EPMBaseShowView: UIView {
     
     public var mtpTouches: [CGPoint : EPMBaseTouchView] = [:]
     
-    public var pointManager = EPMPointManager()
+    public var pointManager = MPMPointManager()
     
     public var layerManager = EPMLayerManager()
     
@@ -58,7 +58,7 @@ class EPMShowViewNormal: EPMBaseShowView {
                                      .make(582/2.0, 347/2.0), .make(731/2.0, 719/2.0),
                                      .make(742/2.0, 347/2.0), .make(960/2.0, 719/2.0) ]
         
-        var points = [EPMPoint]()
+        var points = [MPMPoint]()
         
         let size = CGSize(width: 50, height: 50)
         
@@ -66,7 +66,7 @@ class EPMShowViewNormal: EPMBaseShowView {
             
             let coordinate = coordinates[idx]
             
-            let mp = EPMPoint(level: levels[idx], point: coordinates[idx], sideColor: sideColors[idx])
+            let mp = MPMPoint(level: levels[idx], point: coordinates[idx], sideColor: sideColors[idx])
             points.append(mp)
             
             let mtp = EPMTouchViewRound(frame: CGRect(origin: coordinate, size: size), point: mp)
@@ -97,7 +97,7 @@ class EPMShowViewNormal: EPMBaseShowView {
         pointManager.add(points: points)
         pointManager.setUpAllPoints()
         
-        let points_ready = [EPMPoint](pointManager.pointsMap.values)
+        let points_ready = [MPMPoint](pointManager.pointsMap.values)
         layerManager.addPoints( points_ready , view: self)
         
         addTouchLine()
@@ -210,7 +210,7 @@ class EPMShowViewFourPts: EPMBaseShowView {
         let levels: [CGPoint] = [ .make(0, 0), .make(0, 1),
                                   .make(1, 0), .make(1, 1) ]
         
-        let mss: [EPMPoint.MoveStrategy] = [ .none, .fixed, .none, .foLeftSide ]
+        let mss: [MPMPoint.MoveStrategy] = [ .none, .fixed, .none, .foLeftSide ]
         
         let width = UIScreen.width()
         let height = UIScreen.height()
@@ -222,7 +222,7 @@ class EPMShowViewFourPts: EPMBaseShowView {
         
         let coordinates: [CGPoint] = [ p1, p2, p3, p4 ]
         
-        var points = [EPMPoint]()
+        var points = [MPMPoint]()
         
         let size = CGSize(width: 50, height: 50)
         
@@ -230,7 +230,7 @@ class EPMShowViewFourPts: EPMBaseShowView {
             
             print("idx: \(idx), pt: \(pt)")
             
-            let mp = EPMPoint(level: levels[idx], point: pt, sideColor: sideColors[idx], moveStrategy: mss[idx])
+            let mp = MPMPoint(level: levels[idx], point: pt, sideColor: sideColors[idx], moveStrategy: mss[idx])
             points.append(mp)
             
             let mtp = EPMTouchViewRound(frame: CGRect(origin: pt, size: size), point: mp)
@@ -261,7 +261,7 @@ class EPMShowViewFourPts: EPMBaseShowView {
         pointManager.add(points: points)
         pointManager.setUpAllPoints()
         
-        let points_ready = [EPMPoint](pointManager.pointsMap.values)
+        let points_ready = [MPMPoint](pointManager.pointsMap.values)
         layerManager.addPoints( points_ready , view: self)
         
     }
