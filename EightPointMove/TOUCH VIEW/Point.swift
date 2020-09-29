@@ -11,11 +11,11 @@ struct EPMPoint {
     
     /// Init.
     /// - Parameters:
-    ///   - horizontalLevel: Horizontal level, start from 0.
-    ///   - verticalLevel: Vertical level, start from 0.
+    ///   - level: The level of the point.
     ///   - point: Coordinate of the point.
-    public init(horizontalLevel: Int, verticalLevel: Int, point: CGPoint, sideColor: EPMSideColor = EPMSideColor.empty) {
-        level = CGPoint(x: horizontalLevel, y: verticalLevel)
+    ///   - sideColor: Each side color of the point.
+    public init(level: CGPoint, point: CGPoint, sideColor: EPMSideColor = EPMSideColor.empty) {
+        self.level = level
         self.point = point
         self.sideColor = sideColor
     }
@@ -84,7 +84,7 @@ struct EPMPoint {
     }
     
     public static var zero: EPMPoint {
-        return EPMPoint(horizontalLevel: 0, verticalLevel: 0, point: CGPoint.zero, sideColor: EPMSideColor.empty)
+        return EPMPoint(level: .zero, point: CGPoint.zero, sideColor: EPMSideColor.empty)
     }
     
     /// Add bonded points.
@@ -92,9 +92,9 @@ struct EPMPoint {
     /// Will filter, if has no relation, won't add in.
     ///
     /// - Parameter points: In points.
-    public mutating func addBondPoints(_ points: [EPMPoint]) {
+    public mutating func add(bondPoints points: [EPMPoint]) {
         for p_ in points {
-            addBondPoint(p_)
+            add(bondPoint: p_)
         }
     }
     
@@ -103,31 +103,31 @@ struct EPMPoint {
     /// Will filter, if has no relation, won't add in.
     /// - Parameters:
     ///   - point: In point.
-    public mutating func addBondPoint(_ point: EPMPoint) {
+    public mutating func add(bondPoint point: EPMPoint) {
         
-        guard positionFromPoint(point) != .none else {
+        guard position(ofPoint: point) != .none else {
             return
         }
-        let pos = positionFromPoint(point)
+        let pos = position(ofPoint: point)
         
         bondPoints[pos] = point
     }
     
     /// Update boned point.
     /// - Parameter point: The bonded point.
-    public mutating func updateBondPoint(_ point: EPMPoint) {
+    public mutating func update(bondPoint point: EPMPoint) {
         
-        guard positionFromPoint(point) != .none else {
+        guard position(ofPoint: point) != .none else {
             return
         }
         
-        bondPoints[ positionFromPoint(point) ] = point
+        bondPoints[ position(ofPoint: point) ] = point
     }
     
     /// Infer the position relation by in point's level.
     /// - Parameter point: In point.
     /// - Returns: The position relation between `self`.
-    public func positionFromPoint(_ point: EPMPoint) -> BondPointPosition {
+    public func position(ofPoint point: EPMPoint) -> BondPointPosition {
         
         let inLevel = point.level
         let meLevel = self.level
@@ -164,12 +164,12 @@ struct EPMPoint {
     /// - Parameter newPoint: The point will move to.
     /// - Returns: The limited point that can move to.
     @discardableResult
-    public mutating func limitPoint(_ newPoint: CGPoint) -> CGPoint {
-        guard newPoint != self.point else {
+    public mutating func limit(point aPoint: CGPoint) -> CGPoint {
+        guard aPoint != self.point else {
             return self.point
         }
         
-        var outPoint = newPoint
+        var outPoint = aPoint
         
         // better solution
         limit(of: &outPoint)

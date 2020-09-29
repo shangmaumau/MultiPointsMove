@@ -12,7 +12,7 @@ class ViewController: UIViewController {
     
     var bsdClbrView: EPMView!
     
-    var inputView_c: InputView!
+    var inputView_c: EPMInParamsView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,7 +23,7 @@ class ViewController: UIViewController {
         
         view.addSubview(bsdClbrView)
         
-        inputView_c = InputView(frame: .zero)
+        inputView_c = EPMInParamsView(frame: .zero)
         
         view.addSubview(inputView_c)
         inputView_c.snp.makeConstraints { (make) in

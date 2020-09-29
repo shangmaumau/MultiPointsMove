@@ -22,7 +22,7 @@ class EPMShapeLayer: CAShapeLayer {
     
 }
 
-class EPMShapeLayerManager: NSObject {
+class EPMLayerManager: NSObject {
     
     private static func identifierFrom(p1: CGPoint, p2: CGPoint) -> String {
         var ps = [ p1, p2 ]
@@ -95,7 +95,7 @@ class EPMShapeLayerManager: NSObject {
         linePath.move(to: p0.point)
         linePath.addLine(to: p1.point)
         
-        let color = p0.bondColors[ p0.positionFromPoint(p1) ]
+        let color = p0.bondColors[ p0.position(ofPoint: p1) ]
         
         let lineLayer = EPMShapeLayer.init(identifier: Self.identifierFrom(p1: p0.level, p2: p1.level))
         lineLayer.lineWidth = 5.0

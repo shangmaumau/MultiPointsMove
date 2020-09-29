@@ -58,7 +58,7 @@ class EPMBaseTouchView: UIView {
             point.point = sender.location(in: superview)
             
             if let su = superview as? EPMView,
-               let limitPoint = su.pointManager.limitPoint(point) {
+               let limitPoint = su.pointManager.limit(point: point) {
                 // 更新 touch 的 point
                 self.point = limitPoint
                 panBlock?(sender.state, limitPoint.point)

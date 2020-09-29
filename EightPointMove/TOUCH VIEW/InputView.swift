@@ -1,5 +1,5 @@
 //
-//  InputView.swift
+//  EPMInParamsView.swift
 //  EightPointMove
 //
 //  Created by 尚雷勋 on 2020/9/6.
@@ -8,16 +8,15 @@
 import UIKit
 import SnapKit
 
-class InputCell: UITableViewCell {
+class EPMInParamCell: UITableViewCell {
     
-    public static let identifier = "InputCell"
+    public static let identifier = "EPMInParamCell"
     
     var inputText: UITextField?
     var unitText: UILabel!
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
         
         inputText = UITextField()
         unitText = UILabel()
@@ -28,11 +27,11 @@ class InputCell: UITableViewCell {
         let rvContentView = UIView(frame: .make(0, 0, 40, 40))
         rvContentView.addSubview(unitText!)
         
-        
         inputText?.borderStyle = .roundedRect
+        inputText?.rightView = rvContentView
+        inputText?.rightViewMode = .always
         
         contentView.addSubview(inputText!)
-        
         
         inputText?.snp.makeConstraints({ (make) in
             
@@ -54,13 +53,13 @@ class InputCell: UITableViewCell {
     
 }
 
-class InputView: UIView {
+class EPMInParamsView: UIView {
     
     var tableView: UITableView!
     
-    let dataSource = [ "basic": [ "visiable length", "horiz Y", "vertical X"],
+    let dataSource = [ "basic": [ "fFrontWarnDistance", "nCarDirectionInImage", "nVerticalLine", "nHorizontalLine"],
                        "alert areas width": [ "first", "second", "third" ],
-                       "camera params": [ "focal length", "sensor size" ] ]
+                       "camera params": [ "focal length", "sensor size", "inst height" ] ]
     
     let keys = [ "basic", "alert areas width", "camera params" ]
     
@@ -79,7 +78,7 @@ class InputView: UIView {
         
         tableView = UITableView(frame: .zero, style: .grouped)
         
-        tableView.register(InputCell.self, forCellReuseIdentifier: InputCell.identifier)
+        tableView.register(EPMInParamCell.self, forCellReuseIdentifier: EPMInParamCell.identifier)
         
         tableView.dataSource = self
         tableView.delegate = self
@@ -109,7 +108,7 @@ class InputView: UIView {
 
 }
 
-extension InputView: UITableViewDataSource, UITableViewDelegate {
+extension EPMInParamsView: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
@@ -120,7 +119,7 @@ extension InputView: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        if let cell = tableView.dequeueReusableCell(withIdentifier: InputCell.identifier, for: indexPath) as? InputCell {
+        if let cell = tableView.dequeueReusableCell(withIdentifier: EPMInParamCell.identifier, for: indexPath) as? EPMInParamCell {
             
             let key = keys[indexPath.section]
             

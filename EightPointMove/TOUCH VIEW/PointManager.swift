@@ -15,9 +15,9 @@ class EPMPointManager: NSObject {
     
     /// Add points.
     /// - Parameter points: In points.
-    public func addPoints(_ points: [EPMPoint]) {
-        for p_ in points {
-            addPoint(p_)
+    public func add(points pts: [EPMPoint]) {
+        for p_ in pts {
+            add(point: p_)
         }
     }
     
@@ -25,13 +25,13 @@ class EPMPointManager: NSObject {
     ///
     /// If `points` contains this point, won't add in.
     /// - Parameter point: In point.
-    public func addPoint(_ point: EPMPoint) {
+    public func add(point pt: EPMPoint) {
         
-        guard pointsMap[point.level] == nil else {
+        guard pointsMap[pt.level] == nil else {
             return
         }
         
-        pointsMap[point.level] = point
+        pointsMap[pt.level] = pt
     }
     
     // MARK:- Set up points
@@ -41,39 +41,43 @@ class EPMPointManager: NSObject {
         
         let values = [EPMPoint](pointsMap.values)
         for var val in values {
-            val.addBondPoints(values)
+            val.add(bondPoints: values)
             pointsMap[val.level] = val
         }
     }
     
     /// Remove point.
     /// - Parameter point: In point.
-    public func removePoint(_ point: EPMPoint) {
+    public func remove(point aPoint: EPMPoint) {
         
-        guard pointsMap[point.level] != nil else {
+        guard pointsMap[aPoint.level] != nil else {
             return
         }
         
-        pointsMap.removeValue(forKey: point.level)
+        pointsMap.removeValue(forKey: aPoint.level)
         
         // TODO: Should add the handle after removement.
+    }
+    
+    public func removeAll() {
+        pointsMap.removeAll()
     }
     
     /// Update point.
     /// - Note: Call this after all the points were added.
     /// - Parameter point: In point.
-    public func updatePoint(_ point: EPMPoint) {
+    public func update(point aPoint: EPMPoint) {
         
-        guard pointsMap[point.level] != nil else {
+        guard pointsMap[aPoint.level] != nil else {
             return
         }
         
-        pointsMap[point.level] = point
+        pointsMap[aPoint.level] = aPoint
         
         let values = [EPMPoint](pointsMap.values)
 
         for var val in values {
-            val.updateBondPoint(point)
+            val.update(bondPoint: aPoint)
             pointsMap[val.level] = val
         }
         
@@ -81,11 +85,11 @@ class EPMPointManager: NSObject {
     
     // MARK:- Limit point.
     
-    public func limitPoint(_ newPoint: EPMPoint) -> EPMPoint? {
+    public func limit(point aPoint: EPMPoint) -> EPMPoint? {
         
-        if var nP = point(ofLevel: newPoint.level) {
-            nP.limitPoint(newPoint.point)
-            updatePoint(nP)
+        if var nP = point(ofLevel: aPoint.level) {
+            nP.limit(point: aPoint.point)
+            update(point: nP)
             return point(ofLevel: nP.level)
         }
         

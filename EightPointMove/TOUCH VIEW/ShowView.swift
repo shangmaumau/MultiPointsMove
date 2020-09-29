@@ -15,7 +15,7 @@ class EPMView: UIView {
     var touchLine: EPMTouchViewLine!
     
     public var pointManager = EPMPointManager()
-    public var layerManager = EPMShapeLayerManager()
+    public var layerManager = EPMLayerManager()
     
     
     override init(frame: CGRect) {
@@ -61,7 +61,7 @@ class EPMView: UIView {
             
             let ori = oriCoordi[idx]
             
-            let bsdP = EPMPoint(horizontalLevel: Int(levels[idx].x) , verticalLevel: Int(levels[idx].y), point: oriCoordi[idx], sideColor: sideColors[idx])
+            let bsdP = EPMPoint(level: levels[idx], point: oriCoordi[idx], sideColor: sideColors[idx])
             points.append(bsdP)
             
             let bsdTP = EPMTouchViewRound(frame: CGRect(origin: ori, size: size), point: bsdP)
@@ -89,7 +89,7 @@ class EPMView: UIView {
             bsdTouches[levels[idx]] = bsdTP
         }
         
-        pointManager.addPoints(points)
+        pointManager.add(points: points)
         pointManager.setUpAllPoints()
         
         let points_ready = [EPMPoint](pointManager.pointsMap.values)
@@ -136,10 +136,10 @@ class EPMView: UIView {
                     p20.point = ptoline2
                     p30.point = ptoline3
                     
-                    self.pointManager.updatePoint(p00)
-                    self.pointManager.updatePoint(p10)
-                    self.pointManager.updatePoint(p20)
-                    self.pointManager.updatePoint(p30)
+                    self.pointManager.update(point: p00)
+                    self.pointManager.update(point: p10)
+                    self.pointManager.update(point: p20)
+                    self.pointManager.update(point: p30)
                     
                     self.pointManager.setUpAllPoints()
                     
