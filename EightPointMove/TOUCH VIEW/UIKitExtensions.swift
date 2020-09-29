@@ -7,6 +7,21 @@
 
 import UIKit
 
+extension UIScreen {
+    
+    class func width() -> CGFloat {
+        
+        Self.main.bounds.width
+    }
+    
+    class func height() -> CGFloat {
+        
+        Self.main.bounds.height
+    }
+    
+}
+
+
 public enum GestureDirection: Int {
     case up, down, left, right, none
     public var isVertical: Bool { return [.up, .down].contains(self) }

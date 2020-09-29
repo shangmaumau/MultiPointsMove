@@ -8,15 +8,20 @@
 import UIKit
 import SnapKit
 
-class EPMView: UIView {
+class EPMBaseShowView: UIView {
     
-    var bsdTouches = [CGPoint : EPMTouchViewRound]()
-    
-    var touchLine: EPMTouchViewLine!
+    public var mtpTouches: [CGPoint : EPMBaseTouchView] = [:]
     
     public var pointManager = EPMPointManager()
+    
     public var layerManager = EPMLayerManager()
     
+    
+}
+
+class EPMShowViewNormal: EPMBaseShowView {
+        
+    var touchLine: EPMTouchViewLine!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -43,12 +48,12 @@ class EPMView: UIView {
                                   .make(2, 0), .make(2, 1),
                                   .make(3, 0), .make(3, 1)]
         
-//        let oriCoordi: [CGPoint] = [ .make(334/2.0, 174/2.0), .make(322/2.0, 682/2.0),
+//        let coordinates: [CGPoint] = [ .make(334/2.0, 174/2.0), .make(322/2.0, 682/2.0),
 //                                     .make(568/2.0, 168/2.0), .make(692/2.0, 682/2.0),
 //                                     .make(850/2.0, 166/2.0), .make(976/2.0, 682/2.0),
 //                                     .make(1172/2.0, 162/2.0), .make(1260/2.0, 682/2.0) ]
         
-        let oriCoordi: [CGPoint] = [ .make(319/2.0, 347/2.0), .make(319/2.0, 719/2.0),
+        let coordinates: [CGPoint] = [ .make(319/2.0, 347/2.0), .make(319/2.0, 719/2.0),
                                      .make(424/2.0, 347/2.0), .make(473/2.0, 719/2.0),
                                      .make(582/2.0, 347/2.0), .make(731/2.0, 719/2.0),
                                      .make(742/2.0, 347/2.0), .make(960/2.0, 719/2.0) ]
@@ -59,34 +64,34 @@ class EPMView: UIView {
         
         for idx in 0..<8 {
             
-            let ori = oriCoordi[idx]
+            let coordinate = coordinates[idx]
             
-            let bsdP = EPMPoint(level: levels[idx], point: oriCoordi[idx], sideColor: sideColors[idx])
-            points.append(bsdP)
+            let mp = EPMPoint(level: levels[idx], point: coordinates[idx], sideColor: sideColors[idx])
+            points.append(mp)
             
-            let bsdTP = EPMTouchViewRound(frame: CGRect(origin: ori, size: size), point: bsdP)
+            let mtp = EPMTouchViewRound(frame: CGRect(origin: coordinate, size: size), point: mp)
             
-//            bsdTP.setPanBlock { [weak self] (_, viewPoint) in
+//            mtp.setPanBlock { [weak self] (_, viewPoint) in
 //
 //                guard let self = self else {
 //                    return
 //                }
 //
 //                UIView.animate(withDuration: 0.1) {
-//                    bsdTP.center = viewPoint
+//                    mtp.center = viewPoint
 //                }
 //
-//                if let p = self.pointManager.point(ofLevel: bsdP.level) {
+//                if let p = self.pointManager.point(ofLevel: mp.level) {
 //                    self.layerManager.updatePoint(p, view: self)
 //                }
 //
 //            }
             
-            bsdTP.center = bsdTP.frame.origin
+            mtp.center = mtp.frame.origin
             
-            addSubview(bsdTP)
+            addSubview(mtp)
             
-            bsdTouches[levels[idx]] = bsdTP
+            mtpTouches[levels[idx]] = mtp
         }
         
         pointManager.add(points: points)
@@ -155,10 +160,10 @@ class EPMView: UIView {
                         
                         // 更新 touch point 的位置
                         
-                        self.bsdTouches[.make(0, 0)]?.center = ptoline0
-                        self.bsdTouches[.make(1, 0)]?.center = ptoline1
-                        self.bsdTouches[.make(2, 0)]?.center = ptoline2
-                        self.bsdTouches[.make(3, 0)]?.center = ptoline3
+                        self.mtpTouches[.make(0, 0)]?.center = ptoline0
+                        self.mtpTouches[.make(1, 0)]?.center = ptoline1
+                        self.mtpTouches[.make(2, 0)]?.center = ptoline2
+                        self.mtpTouches[.make(3, 0)]?.center = ptoline3
                         
                     }
                     
@@ -180,3 +185,85 @@ class EPMView: UIView {
     
 }
 
+class EPMShowViewFourPts: EPMBaseShowView {
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        backgroundColor = .white
+        
+        setUp()
+        
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func setUp() {
+        
+        let sideColors: [EPMSideColor] = [ .make(nil, nil, .red, .red),
+                                           .make(.red, nil, .red, nil),
+                                           .make(nil, .red, .red, .red),
+                                           .make(.red, .red, .red, nil) ]
+        
+        let levels: [CGPoint] = [ .make(0, 0), .make(0, 1),
+                                  .make(1, 0), .make(1, 1) ]
+        
+        let mss: [EPMPoint.MoveStrategy] = [ .none, .fixed, .none, .foLeftSide ]
+        
+        let width = UIScreen.width()
+        let height = UIScreen.height()
+        
+        let p1 = CGPoint(x: width * 0.2, y: height * 0.2)
+        let p2 = CGPoint(x: width * 0.1, y: height * 0.9)
+        let p3 = CGPoint(x: width * 0.8, y: height * 0.2)
+        let p4 = CGPoint(x: width * 0.9, y: height * 0.9)
+        
+        let coordinates: [CGPoint] = [ p1, p2, p3, p4 ]
+        
+        var points = [EPMPoint]()
+        
+        let size = CGSize(width: 50, height: 50)
+        
+        for (idx, pt) in coordinates.enumerated() {
+            
+            print("idx: \(idx), pt: \(pt)")
+            
+            let mp = EPMPoint(level: levels[idx], point: pt, sideColor: sideColors[idx], moveStrategy: mss[idx])
+            points.append(mp)
+            
+            let mtp = EPMTouchViewRound(frame: CGRect(origin: pt, size: size), point: mp)
+            
+            mtp.setPanBlock { [weak self] (_, viewPoint) in
+                
+                guard let self = self else {
+                    return
+                }
+                
+                UIView.animate(withDuration: 0.1) {
+                    mtp.center = viewPoint
+                }
+                
+                if let p = self.pointManager.point(ofLevel: mp.level) {
+                    self.layerManager.updatePoint(p, view: self)
+                }
+                
+            }
+            
+            mtp.center = mtp.frame.origin
+            
+            addSubview(mtp)
+            
+            mtpTouches[ levels[idx] ] = mtp
+        }
+        
+        pointManager.add(points: points)
+        pointManager.setUpAllPoints()
+        
+        let points_ready = [EPMPoint](pointManager.pointsMap.values)
+        layerManager.addPoints( points_ready , view: self)
+        
+    }
+    
+}

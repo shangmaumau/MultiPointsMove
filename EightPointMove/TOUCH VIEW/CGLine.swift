@@ -23,7 +23,9 @@ struct CGLine {
     
     /// There is one point outside the line, we want the near point of the line to this point.
     /// If the line type is normal, then we will have two near points, one is on vertical direction,
-    /// the other is on horizontal direction. Type `nearest` is the nearest point.
+    /// the other is on horizontal direction. Type `nearest` is the more near one of the two.
+    ///
+    /// If you wanna the pedal point, use func `pedalOf(point)`.
     public enum NearPointType {
         case horiz
         case vert

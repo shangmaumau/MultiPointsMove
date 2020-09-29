@@ -83,6 +83,8 @@ class EPMInParamsView: UIView {
         tableView.dataSource = self
         tableView.delegate = self
         
+        tableView.keyboardDismissMode = .interactive
+        
         tableView.tableFooterView = UIView()
         
         

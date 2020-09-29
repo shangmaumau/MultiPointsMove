@@ -10,29 +10,57 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    var bsdClbrView: EPMView!
+    var epmView: EPMShowViewNormal?
     
-    var inputView_c: EPMInParamsView!
+    var fpmView: EPMShowViewFourPts?
+    
+    var inTextView: EPMInParamsView?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         view.backgroundColor = .white
         
-        bsdClbrView = EPMView(frame: view.frame)
+        addFourPoints()
         
-        view.addSubview(bsdClbrView)
+    }
+    
+    func addFourPoints() {
         
-        inputView_c = EPMInParamsView(frame: .zero)
+        fpmView = EPMShowViewFourPts(frame: .zero)
         
-        view.addSubview(inputView_c)
-        inputView_c.snp.makeConstraints { (make) in
+        view.addSubview(fpmView!)
+        
+        fpmView?.snp.makeConstraints({ (make) in
+            
+            make.edges.equalToSuperview()
+        })
+    }
+    
+    func addEightPoints() {
+        
+        epmView = EPMShowViewNormal(frame: .zero)
+        
+        view.addSubview(epmView!)
+        
+        epmView?.snp.makeConstraints({ (make) in
+            make.edges.equalToSuperview()
+        })
+        
+      
+    }
+    
+    func addInputView() {
+        
+        inTextView = EPMInParamsView(frame: .zero)
+        
+        view.addSubview(inTextView!)
+        
+        inTextView?.snp.makeConstraints({ (make) in
             
             make.width.equalToSuperview().multipliedBy(0.5)
             make.top.right.bottom.equalToSuperview()
-            
-        }
-        
+        })
         
     }
     

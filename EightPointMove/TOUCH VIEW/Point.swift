@@ -9,24 +9,6 @@ import UIKit
 
 struct EPMPoint {
     
-    /// Init.
-    /// - Parameters:
-    ///   - level: The level of the point.
-    ///   - point: Coordinate of the point.
-    ///   - sideColor: Each side color of the point.
-    public init(level: CGPoint, point: CGPoint, sideColor: EPMSideColor = EPMSideColor.empty) {
-        self.level = level
-        self.point = point
-        self.sideColor = sideColor
-    }
-    
-    private enum Side: String {
-        case top
-        case left
-        case right
-        case bottom
-    }
-    
     /// Bond points position.
     public enum BondPointPosition: String {
         /// No relation.
@@ -49,9 +31,52 @@ struct EPMPoint {
         case bottomRight
     }
     
-    public var level: CGPoint = CGPoint.zero
-    public var point: CGPoint = CGPoint.zero
+    /// 点移动策略
+    ///
+    /// 点移动策略会影响点的移动，但在移动策略的影响之后，还会做基础限制
+    public enum MoveStrategy {
+        /// 基础限制
+        case none
+        /// 固定，不能移动
+        case fixed
+        /// 当前坐标的水平方向移动
+        case horiz
+        /// 当前坐标的垂直方向移动
+        case verti
+        /// 沿着与右点连线移动，如果没有右点，只做基础限制
+        case foRightSide
+        /// 沿着与左点连线移动，如果没有左点，只做基础限制
+        case foLeftSide
+        /// 沿着与上点连线移动，如果没有上点，只做基础限制
+        case foUpSide
+        /// 沿着与下点连线移动，如果没有下点，只做基础限制
+        case foDownSide
+    }
+    
+    /// Init.
+    /// - Parameters:
+    ///   - level: The level of the point.
+    ///   - point: Coordinate of the point.
+    ///   - sideColor: Each side color of the point.
+    ///   - moveStrategy: How this point can be moved.
+    public init(level: CGPoint, point: CGPoint, sideColor: EPMSideColor = .empty, moveStrategy: MoveStrategy = .none) {
+        self.level = level
+        self.point = point
+        self.sideColor = sideColor
+        self.moveStrategy = moveStrategy
+    }
+    
+    private enum Side: String {
+        case top
+        case left
+        case right
+        case bottom
+    }
+    
+    public var level: CGPoint
+    public var point: CGPoint
     private var sideColor: EPMSideColor
+    private var moveStrategy: MoveStrategy
     
     /// `bondPoints` can only be access deep in first level, and should only access its `point`.
     ///
@@ -84,7 +109,7 @@ struct EPMPoint {
     }
     
     public static var zero: EPMPoint {
-        return EPMPoint(level: .zero, point: CGPoint.zero, sideColor: EPMSideColor.empty)
+        return EPMPoint(level: .zero, point: CGPoint.zero)
     }
     
     /// Add bonded points.
@@ -171,12 +196,71 @@ struct EPMPoint {
         
         var outPoint = aPoint
         
-        // better solution
+        // limit point by move strategy
+        limit(of: &outPoint, ms: self.moveStrategy)
+        
+        // limit point by surrounding points
         limit(of: &outPoint)
 
         self.point = outPoint
         
         return outPoint
+    }
+    
+    private func limit(of point: inout CGPoint, ms: MoveStrategy) {
+        
+        switch ms {
+        case .none:
+            break
+            
+        case .fixed:
+            point = self.point
+        
+        case .verti:
+            point = .make(self.point.x, point.y)
+            
+        case .horiz:
+            point = .make(point.x, self.point.y)
+            
+        case .foUpSide:
+            
+            if let upPt = bondPoints[.top],
+               let line = CGLine(p1: self.point, p2: upPt.point) {
+                
+                point = line.nearPointOf(point: point, type: .horiz)
+                
+            }
+            
+        case .foDownSide:
+            
+            if let upPt = bondPoints[.bottom],
+               let line = CGLine(p1: self.point, p2: upPt.point) {
+                
+                point = line.nearPointOf(point: point, type: .horiz)
+                
+            }
+        
+        case .foLeftSide:
+            
+            if let upPt = bondPoints[.left],
+               let line = CGLine(p1: self.point, p2: upPt.point) {
+                
+                point = line.nearPointOf(point: point, type: .vert)
+                
+            }
+        
+        case .foRightSide:
+            
+            if let upPt = bondPoints[.right],
+               let line = CGLine(p1: self.point, p2: upPt.point) {
+                
+                point = line.nearPointOf(point: point, type: .vert)
+                
+            }
+            
+        }
+        
+        
     }
 
     private func limit(of point: inout CGPoint) {

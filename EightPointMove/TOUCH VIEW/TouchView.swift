@@ -57,7 +57,7 @@ class EPMBaseTouchView: UIView {
             
             point.point = sender.location(in: superview)
             
-            if let su = superview as? EPMView,
+            if let su = superview as? EPMBaseShowView,
                let limitPoint = su.pointManager.limit(point: point) {
                 // 更新 touch 的 point
                 self.point = limitPoint
