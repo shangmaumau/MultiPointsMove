@@ -10,11 +10,11 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    var epmView: EPMShowViewNormal?
+    var MPMView: MPMShowViewNormal?
     
-    var fpmView: EPMShowViewFourPts?
+    var fpmView: MPMShowViewFourPts?
     
-    var inTextView: EPMInParamsView?
+    var inTextView: MPMInParamsView?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,11 +23,13 @@ class ViewController: UIViewController {
         
         addFourPoints()
         
+        // addInputView()
+        
     }
     
     func addFourPoints() {
         
-        fpmView = EPMShowViewFourPts(frame: .zero)
+        fpmView = MPMShowViewFourPts(frame: .zero)
         
         view.addSubview(fpmView!)
         
@@ -39,11 +41,11 @@ class ViewController: UIViewController {
     
     func addEightPoints() {
         
-        epmView = EPMShowViewNormal(frame: .zero)
+        MPMView = MPMShowViewNormal(frame: .zero)
         
-        view.addSubview(epmView!)
+        view.addSubview(MPMView!)
         
-        epmView?.snp.makeConstraints({ (make) in
+        MPMView?.snp.makeConstraints({ (make) in
             make.edges.equalToSuperview()
         })
         
@@ -52,7 +54,7 @@ class ViewController: UIViewController {
     
     func addInputView() {
         
-        inTextView = EPMInParamsView(frame: .zero)
+        inTextView = MPMInParamsView(frame: .zero)
         
         view.addSubview(inTextView!)
         

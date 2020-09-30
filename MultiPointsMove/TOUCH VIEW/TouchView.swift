@@ -7,7 +7,7 @@
 
 import UIKit
 
-class EPMBaseTouchView: UIView {
+class MPMBaseTouchView: UIView {
     
     public var point: MPMPoint = MPMPoint.zero
     private var panBlock: ((UIGestureRecognizer.State, CGPoint) -> Void)?
@@ -57,7 +57,7 @@ class EPMBaseTouchView: UIView {
             
             point.point = sender.location(in: superview)
             
-            if let su = superview as? EPMBaseShowView,
+            if let su = superview as? MPMBaseShowView,
                let limitPoint = su.pointManager.limit(point: point) {
                 // 更新 touch 的 point
                 self.point = limitPoint
@@ -69,7 +69,7 @@ class EPMBaseTouchView: UIView {
     
 }
 
-class EPMTouchViewRound: EPMBaseTouchView {
+class MPMTouchViewRound: MPMBaseTouchView {
     
     public override init(frame: CGRect, point: MPMPoint) {
         super.init(frame: frame, point: point)
@@ -97,7 +97,7 @@ class EPMTouchViewRound: EPMBaseTouchView {
     
 }
 
-class EPMTouchViewLine: EPMBaseTouchView {
+class MPMTouchViewLine: MPMBaseTouchView {
     
     public override init(frame: CGRect, point: MPMPoint) {
         super.init(frame: frame, point: point)

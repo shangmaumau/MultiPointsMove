@@ -14,9 +14,9 @@ public func distanceOf(p1: CGPoint, p2: CGPoint) -> CGFloat {
 struct CGLine {
     
     /// Line type. Line has three forms, the special two is vertical and horizontal, and the normal
-    /// form is diagonal.
+    /// form is oblique.
     public enum LineType {
-        case diagonal
+        case oblique
         case horiz
         case vert
     }
@@ -47,7 +47,7 @@ struct CGLine {
             
         } else {
             
-            return .diagonal
+            return .oblique
         }
     }
 
@@ -107,7 +107,7 @@ struct CGLine {
     
     public func nearPointOf(point: CGPoint, type: NearPointType = .nearest) -> CGPoint {
         
-        if self.type != .diagonal {
+        if self.type != .oblique {
             return pedalOf(point: point)
         }
         
@@ -146,7 +146,7 @@ struct CGLine {
         
         switch type {
         
-        case .diagonal:
+        case .oblique:
             
             let k1 = k
             let b1 = b

@@ -8,20 +8,20 @@
 import UIKit
 import SnapKit
 
-class EPMBaseShowView: UIView {
+class MPMBaseShowView: UIView {
     
-    public var mtpTouches: [CGPoint : EPMBaseTouchView] = [:]
+    public var mtpTouches: [CGPoint : MPMBaseTouchView] = [:]
     
     public var pointManager = MPMPointManager()
     
-    public var layerManager = EPMLayerManager()
+    public var layerManager = MPMLayerManager()
     
     
 }
 
-class EPMShowViewNormal: EPMBaseShowView {
+class MPMShowViewNormal: MPMBaseShowView {
         
-    var touchLine: EPMTouchViewLine!
+    var touchLine: MPMTouchViewLine!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -34,7 +34,7 @@ class EPMShowViewNormal: EPMBaseShowView {
     
     func setUp() {
         
-        let sideColors: [EPMSideColor] = [ .make(nil, nil, .red, .red),
+        let sideColors: [MPMSideColor] = [ .make(nil, nil, .red, .red),
                                            .make(.red, nil, .red, nil),
                                            .make(nil, .red, .yellow, .red),
                                            .make(.red, .red, .yellow, nil),
@@ -69,7 +69,7 @@ class EPMShowViewNormal: EPMBaseShowView {
             let mp = MPMPoint(level: levels[idx], point: coordinates[idx], sideColor: sideColors[idx])
             points.append(mp)
             
-            let mtp = EPMTouchViewRound(frame: CGRect(origin: coordinate, size: size), point: mp)
+            let mtp = MPMTouchViewRound(frame: CGRect(origin: coordinate, size: size), point: mp)
             
 //            mtp.setPanBlock { [weak self] (_, viewPoint) in
 //
@@ -122,7 +122,7 @@ class EPMShowViewNormal: EPMBaseShowView {
                let line2 = CGLine(p1: p20.point, p2: p21.point),
                let line3 = CGLine(p1: p30.point, p2: p31.point) {
                 
-                touchLine = EPMTouchViewLine(frame: lineRect, point: .zero)
+                touchLine = MPMTouchViewLine(frame: lineRect, point: .zero)
                 
                 touchLine.setPanBlock { [weak self] (state, point) in
                     
@@ -185,7 +185,7 @@ class EPMShowViewNormal: EPMBaseShowView {
     
 }
 
-class EPMShowViewFourPts: EPMBaseShowView {
+class MPMShowViewFourPts: MPMBaseShowView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -202,7 +202,7 @@ class EPMShowViewFourPts: EPMBaseShowView {
     
     private func setUp() {
         
-        let sideColors: [EPMSideColor] = [ .make(nil, nil, .red, .red),
+        let sideColors: [MPMSideColor] = [ .make(nil, nil, .red, .red),
                                            .make(.red, nil, .red, nil),
                                            .make(nil, .red, .red, .red),
                                            .make(.red, .red, .red, nil) ]
@@ -233,7 +233,7 @@ class EPMShowViewFourPts: EPMBaseShowView {
             let mp = MPMPoint(level: levels[idx], point: pt, sideColor: sideColors[idx], moveStrategy: mss[idx])
             points.append(mp)
             
-            let mtp = EPMTouchViewRound(frame: CGRect(origin: pt, size: size), point: mp)
+            let mtp = MPMTouchViewRound(frame: CGRect(origin: pt, size: size), point: mp)
             
             mtp.setPanBlock { [weak self] (_, viewPoint) in
                 

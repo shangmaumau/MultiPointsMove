@@ -7,7 +7,7 @@
 
 import UIKit
 
-class EPMShapeLayer: CAShapeLayer {
+class MPMShapeLayer: CAShapeLayer {
     
     public var identifier: String!
     
@@ -22,7 +22,7 @@ class EPMShapeLayer: CAShapeLayer {
     
 }
 
-class EPMLayerManager: NSObject {
+class MPMLayerManager: NSObject {
     
     private static func identifierFrom(p1: CGPoint, p2: CGPoint) -> String {
         var ps = [ p1, p2 ]
@@ -54,7 +54,7 @@ class EPMLayerManager: NSObject {
         
         if let layers = view.layer.sublayers {
             for layer in layers {
-                if let layer = layer as? EPMShapeLayer {
+                if let layer = layer as? MPMShapeLayer {
                     if ids.firstIndex(of: layer.identifier) != nil {
                         layer.removeFromSuperlayer()
                     }
@@ -72,7 +72,7 @@ class EPMLayerManager: NSObject {
         
         if let layers = view.layer.sublayers {
             for layer in layers {
-                if let layer = layer as? EPMShapeLayer {
+                if let layer = layer as? MPMShapeLayer {
                     if let idx = ids.firstIndex(of: layer.identifier) {
                         ids.remove(at: idx)
                     }
@@ -97,7 +97,7 @@ class EPMLayerManager: NSObject {
         
         let color = p0.bondColors[ p0.position(ofPoint: p1) ]
         
-        let lineLayer = EPMShapeLayer.init(identifier: Self.identifierFrom(p1: p0.level, p2: p1.level))
+        let lineLayer = MPMShapeLayer.init(identifier: Self.identifierFrom(p1: p0.level, p2: p1.level))
         lineLayer.lineWidth = 5.0
         lineLayer.strokeColor = color!!.cgColor
         lineLayer.path = linePath.cgPath

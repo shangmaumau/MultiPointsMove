@@ -1,5 +1,5 @@
 //
-//  EPMTouchView.swift
+//  MPMTouchView.swift
 //  MultiPointsMove
 //
 //  Created by 尚雷勋 on 2020/7/7.
@@ -59,7 +59,7 @@ struct MPMPoint {
     ///   - point: Coordinate of the point.
     ///   - sideColor: Each side color of the point.
     ///   - moveStrategy: How this point can be moved.
-    public init(level: CGPoint, point: CGPoint, sideColor: EPMSideColor = .empty, moveStrategy: MoveStrategy = .none) {
+    public init(level: CGPoint, point: CGPoint, sideColor: MPMSideColor = .empty, moveStrategy: MoveStrategy = .none) {
         self.level = level
         self.point = point
         self.sideColor = sideColor
@@ -75,7 +75,7 @@ struct MPMPoint {
     
     public var level: CGPoint
     public var point: CGPoint
-    private var sideColor: EPMSideColor
+    private var sideColor: MPMSideColor
     private var moveStrategy: MoveStrategy
     
     /// `bondPoints` can only be access deep in first level, and should only access its `point`.
@@ -205,6 +205,14 @@ struct MPMPoint {
         self.point = outPoint
         
         return outPoint
+    }
+    
+    /// 对角线限制
+    private func limitDiagonal(of point: inout CGPoint) {
+        
+        
+        
+        
     }
     
     private func limit(of point: inout CGPoint, ms: MoveStrategy) {
@@ -498,7 +506,7 @@ extension MPMPoint: Equatable {
 }
 
 
-struct EPMSideColor {
+struct MPMSideColor {
     
     private enum Side: String {
         case top
@@ -529,7 +537,7 @@ struct EPMSideColor {
         Self.init(top: top, left: left, right: right, bottom: bottom)
     }
     
-    public static var empty: EPMSideColor {
+    public static var empty: MPMSideColor {
         Self.init(top: nil, left: nil, right: nil, bottom: nil)
     }
     
