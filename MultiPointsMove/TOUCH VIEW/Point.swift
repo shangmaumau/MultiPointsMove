@@ -208,9 +208,8 @@ struct MPMPoint {
     }
     
     /// 对角线限制
+    /// 暂时不做它了
     private func limitDiagonal(of point: inout CGPoint) {
-        
-        
         
         
     }

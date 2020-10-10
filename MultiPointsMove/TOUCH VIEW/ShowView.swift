@@ -49,14 +49,14 @@ class MPMShowViewNormal: MPMBaseShowView {
                                   .make(3, 0), .make(3, 1)]
         
 //        let coordinates: [CGPoint] = [ .make(334/2.0, 174/2.0), .make(322/2.0, 682/2.0),
-//                                     .make(568/2.0, 168/2.0), .make(692/2.0, 682/2.0),
-//                                     .make(850/2.0, 166/2.0), .make(976/2.0, 682/2.0),
-//                                     .make(1172/2.0, 162/2.0), .make(1260/2.0, 682/2.0) ]
+//                                       .make(568/2.0, 168/2.0), .make(692/2.0, 682/2.0),
+//                                       .make(850/2.0, 166/2.0), .make(976/2.0, 682/2.0),
+//                                       .make(1172/2.0, 162/2.0), .make(1260/2.0, 682/2.0) ]
         
         let coordinates: [CGPoint] = [ .make(319/2.0, 347/2.0), .make(319/2.0, 719/2.0),
-                                     .make(424/2.0, 347/2.0), .make(473/2.0, 719/2.0),
-                                     .make(582/2.0, 347/2.0), .make(731/2.0, 719/2.0),
-                                     .make(742/2.0, 347/2.0), .make(960/2.0, 719/2.0) ]
+                                       .make(424/2.0, 347/2.0), .make(473/2.0, 719/2.0),
+                                       .make(582/2.0, 347/2.0), .make(731/2.0, 719/2.0),
+                                       .make(742/2.0, 347/2.0), .make(960/2.0, 719/2.0) ]
         
         var points = [MPMPoint]()
         
@@ -91,7 +91,7 @@ class MPMShowViewNormal: MPMBaseShowView {
             
             addSubview(mtp)
             
-            mtpTouches[levels[idx]] = mtp
+            mtpTouches[ levels[idx] ] = mtp
         }
         
         pointManager.add(points: points)
@@ -187,10 +187,12 @@ class MPMShowViewNormal: MPMBaseShowView {
 
 class MPMShowViewFourPts: MPMBaseShowView {
     
+    private var panMoveBlock: ( () -> Void)?
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        backgroundColor = .white
+        backgroundColor = .clear
         
         setUp()
         
@@ -200,12 +202,16 @@ class MPMShowViewFourPts: MPMBaseShowView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    public func setPanBlock(_ block: @escaping ()->Void) {
+        self.panMoveBlock = block
+    }
+    
     private func setUp() {
         
-        let sideColors: [MPMSideColor] = [ .make(nil, nil, .red, .red),
-                                           .make(.red, nil, .red, nil),
-                                           .make(nil, .red, .red, .red),
-                                           .make(.red, .red, .red, nil) ]
+        let sideColors: [MPMSideColor] = [ .make(nil, nil, .clear, .clear),
+                                           .make(.clear, nil, .clear, nil),
+                                           .make(nil, .clear, .clear, .clear),
+                                           .make(.clear, .clear, .clear, nil) ]
         
         let levels: [CGPoint] = [ .make(0, 0), .make(0, 1),
                                   .make(1, 0), .make(1, 1) ]
@@ -247,6 +253,7 @@ class MPMShowViewFourPts: MPMBaseShowView {
                 
                 if let p = self.pointManager.point(ofLevel: mp.level) {
                     self.layerManager.updatePoint(p, view: self)
+                    self.panMoveBlock?()
                 }
                 
             }
@@ -256,6 +263,124 @@ class MPMShowViewFourPts: MPMBaseShowView {
             addSubview(mtp)
             
             mtpTouches[ levels[idx] ] = mtp
+        }
+        
+        pointManager.add(points: points)
+        pointManager.setUpAllPoints()
+        
+        let points_ready = [MPMPoint](pointManager.pointsMap.values)
+        layerManager.addPoints( points_ready , view: self)
+        
+    }
+    
+}
+
+class MPMShowViewDummy: MPMBaseShowView {
+        
+    var touchLine: MPMTouchViewLine!
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        backgroundColor = .white
+        
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    
+    public func setUp(with points: [CGPoint : MPMPoint]) {
+        
+        updateRoundFourPoints(points)
+    }
+    
+    public func updateRoundFourPoints(_ points: [CGPoint : MPMPoint]) {
+        
+        guard points.count >= 4 else {
+            debugPrint("InPoints count less than 4, can't redraw 8 points.")
+            return
+        }
+        
+        if let tlPt = points[.make(0, 0)],
+           let trPt = points[.make(1, 0)],
+           let blPt = points[.make(0, 1)],
+           let brPt = points[.make(1, 1)] {
+            
+            if let line0 = CGLine(p1: tlPt.point, p2: blPt.point),
+               let line1 = CGLine(p1: trPt.point, p2: brPt.point) {
+                
+                let leftH = abs(tlPt.point.y - blPt.point.y) / 3.0
+                let rightH = abs(trPt.point.y - brPt.point.y) / 3.0
+                
+                let left_v31p = CGPoint.make(tlPt.point.x, tlPt.point.y + leftH * 1.0)
+                let left_v32p = CGPoint.make(tlPt.point.x, tlPt.point.y + leftH * 2.0)
+
+                let rt_v31p = CGPoint.make(trPt.point.x, trPt.point.y + rightH * 1.0)
+                let rt_v32p = CGPoint.make(trPt.point.x, trPt.point.y + rightH * 2.0)
+                
+                let left_31p = line0.nearPointOf(point: left_v31p, type: .horiz)
+                let left_32p = line0.nearPointOf(point: left_v32p, type: .horiz)
+
+                let rt_31p = line1.nearPointOf(point: rt_v31p, type: .horiz)
+                let rt_32p = line1.nearPointOf(point: rt_v32p, type: .horiz)
+                
+                removePointsAndLayers()
+                
+                let points = [ tlPt.point, left_31p, left_32p, blPt.point,
+                               trPt.point, rt_31p, rt_32p, brPt.point ]
+                
+                add(points: points)
+                
+            }
+            
+        }
+        
+    }
+
+    
+    private func removePointsAndLayers() {
+        
+        // Remove all line layers
+        self.layer.sublayers?.forEach({ (layer) in
+            if layer.isKind(of: MPMShapeLayer.self) {
+                layer.removeFromSuperlayer()
+            }
+        })
+        
+        // Remove all points
+        pointManager.removeAll()
+        
+    }
+    
+    private func add(points inPoints: [CGPoint]) {
+        
+        guard inPoints.count >= 8 else {
+            debugPrint("InPoints count less than 8, can't draw lines.")
+            return
+        }
+        
+        let sideColors: [MPMSideColor] = [ .make(nil, nil, .green, .green), // {0,0}
+                                           .make(.green, nil, .yellow, .yellow), // {0,1}
+                                           .make(.yellow, nil, .red, .red), // {0,2}
+                                           .make(.red, nil, .red, nil), // {0,3}
+                                           
+                                           .make(nil, .green, nil, .green), // {1,0}
+                                           .make(.green, .yellow, nil, .yellow), // {1,1}
+                                           .make(.yellow, .red, nil, .red), // {1,2}
+                                           .make(.red, .red, nil, nil) ] // {1,3}
+        
+        let levels: [CGPoint] = [ .make(0, 0), .make(0, 1), .make(0, 2), .make(0, 3),
+                                  .make(1, 0), .make(1, 1), .make(1, 2), .make(1, 3) ]
+        
+        var points = [MPMPoint]()
+        
+        for (idx, lvl) in levels.enumerated() {
+            
+            let mp = MPMPoint(level: lvl, point: inPoints[idx], sideColor: sideColors[idx])
+            points.append(mp)
+            
         }
         
         pointManager.add(points: points)

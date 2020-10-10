@@ -13,6 +13,7 @@ class ViewController: UIViewController {
     var MPMView: MPMShowViewNormal?
     
     var fpmView: MPMShowViewFourPts?
+    var dummyView: MPMShowViewDummy?
     
     var inTextView: MPMInParamsView?
     
@@ -37,7 +38,22 @@ class ViewController: UIViewController {
             
             make.edges.equalToSuperview()
         })
+        
+        fpmView?.setPanBlock { [weak self] in
+            self?.dummyView?.updateRoundFourPoints(self!.fpmView!.pointManager.pointsMap)
+        }
+        
+        
+        dummyView = MPMShowViewDummy(frame: .zero)
+        view.insertSubview(dummyView!, belowSubview: fpmView!)
+        
+        dummyView?.snp.makeConstraints({ (make) in
+            make.edges.equalToSuperview()
+        })
+        
+        dummyView?.setUp(with: fpmView!.pointManager.pointsMap)
     }
+    
     
     func addEightPoints() {
         
