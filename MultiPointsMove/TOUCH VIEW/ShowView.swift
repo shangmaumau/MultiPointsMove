@@ -185,7 +185,7 @@ class MPMShowViewNormal: MPMBaseShowView {
     
 }
 
-class MPMShowViewFourPts: MPMBaseShowView {
+class MPMShowViewFisheye: MPMBaseShowView {
     
     private var panMoveBlock: ( () -> Void)?
     

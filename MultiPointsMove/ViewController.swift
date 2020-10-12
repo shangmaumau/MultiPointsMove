@@ -10,9 +10,9 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    var MPMView: MPMShowViewNormal?
+    var normalView: MPMShowViewNormal?
     
-    var fpmView: MPMShowViewFourPts?
+    var fisheyeView: MPMShowViewFisheye?
     var dummyView: MPMShowViewDummy?
     
     var inTextView: MPMInParamsView?
@@ -30,38 +30,38 @@ class ViewController: UIViewController {
     
     func addFourPoints() {
         
-        fpmView = MPMShowViewFourPts(frame: .zero)
+        fisheyeView = MPMShowViewFisheye(frame: .zero)
         
-        view.addSubview(fpmView!)
+        view.addSubview(fisheyeView!)
         
-        fpmView?.snp.makeConstraints({ (make) in
+        fisheyeView?.snp.makeConstraints({ (make) in
             
             make.edges.equalToSuperview()
         })
         
-        fpmView?.setPanBlock { [weak self] in
-            self?.dummyView?.updateRoundFourPoints(self!.fpmView!.pointManager.pointsMap)
+        fisheyeView?.setPanBlock { [weak self] in
+            self?.dummyView?.updateRoundFourPoints(self!.fisheyeView!.pointManager.pointsMap)
         }
         
         
         dummyView = MPMShowViewDummy(frame: .zero)
-        view.insertSubview(dummyView!, belowSubview: fpmView!)
+        view.insertSubview(dummyView!, belowSubview: fisheyeView!)
         
         dummyView?.snp.makeConstraints({ (make) in
             make.edges.equalToSuperview()
         })
         
-        dummyView?.setUp(with: fpmView!.pointManager.pointsMap)
+        dummyView?.setUp(with: fisheyeView!.pointManager.pointsMap)
     }
     
     
     func addEightPoints() {
         
-        MPMView = MPMShowViewNormal(frame: .zero)
+        normalView = MPMShowViewNormal(frame: .zero)
         
-        view.addSubview(MPMView!)
+        view.addSubview(normalView!)
         
-        MPMView?.snp.makeConstraints({ (make) in
+        normalView?.snp.makeConstraints({ (make) in
             make.edges.equalToSuperview()
         })
         
