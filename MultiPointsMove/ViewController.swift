@@ -22,13 +22,13 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view.
         view.backgroundColor = .white
         
-        addFourPoints()
+        addFisheye()
         
         // addInputView()
         
     }
     
-    func addFourPoints() {
+    func addFisheye() {
         
         fisheyeView = MPMShowViewFisheye(frame: .zero)
         
